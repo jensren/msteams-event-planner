@@ -35,8 +35,15 @@ class Tab extends React.Component {
 
       return (
       <div>
-        <h3>Hello World!</h3>
-        <h1>Congratulations {userName}!</h1> <h3>This is the tab you made :-)</h3>
+        <h1>What would you like to do?</h1>
+        <form>
+          <p>
+            <input placeholder="e.g. have lunch with my boss" autoFocus aria-label="create an event"/>
+          </p>
+          <p>
+            <button>Go</button>
+          </p>
+        </form>
       </div>
       );
   }
