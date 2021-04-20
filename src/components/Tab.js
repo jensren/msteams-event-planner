@@ -5,6 +5,8 @@ import React from 'react';
 import './App.css';
 import * as microsoftTeams from "@microsoft/teams-js";
 
+import Dashboard from './tabComponents/Dashboard';
+
 /**
  * The 'PersonalTab' component renders the main tab content
  * of your app.
@@ -30,22 +32,13 @@ class Tab extends React.Component {
   }
 
   render() {
-
-      let userName = Object.keys(this.state.context).length > 0 ? this.state.context['upn'] : "";
-
-      return (
-      <div>
-        <h1>What would you like to do?</h1>
-        <form>
-          <p>
-            <input placeholder="e.g. have lunch with my boss" autoFocus aria-label="create an event"/>
-          </p>
-          <p>
-            <button>Go</button>
-          </p>
-        </form>
-      </div>
-      );
+    return (
+      <React.Fragment>
+        <h1>Events Manager</h1>
+        <Dashboard />
+      </React.Fragment>
+    );
   }
 }
+
 export default Tab;
