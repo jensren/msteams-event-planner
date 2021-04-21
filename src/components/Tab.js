@@ -4,8 +4,12 @@
 import React from 'react';
 import './App.css';
 import * as microsoftTeams from "@microsoft/teams-js";
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+
+// Component imports
 
 import Dashboard from './tabComponents/Dashboard';
+import EventLaunch from './tabComponents/EventLaunch';
 
 /**
  * The 'PersonalTab' component renders the main tab content
@@ -31,12 +35,16 @@ class Tab extends React.Component {
     // Next steps: Error handling using the error object
   }
 
+
   render() {
     return (
       <React.Fragment>
         <h1>Events Manager</h1>
-        <Dashboard />
-      </React.Fragment>
+        <Switch>
+          <Route exact path="/tab" component={Dashboard} />
+          <Route path="/tab/new-event" component={EventLaunch} />
+        </Switch>
+      </React.Fragment> 
     );
   }
 }
