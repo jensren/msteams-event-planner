@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import React from 'react';
 import './App.css';
 import * as microsoftTeams from "@microsoft/teams-js";
