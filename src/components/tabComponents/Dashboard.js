@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+
 
 export default function Dashboard(props) {
   const [eventQuery, setEventQuery] = useState('');
@@ -19,25 +22,20 @@ export default function Dashboard(props) {
   return (
     <React.Fragment>
       <h2>Add a new event</h2>
-      <form 
+      <Form
         onSubmit={handleSubmit}
       >
-        <p>
-          <input 
+        <Form.Group>
+          <Form.Control
+            type="input" 
             placeholder="e.g. have lunch with my boss" 
-            autoFocus 
             aria-label="create an event"
             onChange={handleChange}
           />
-        </p>
-        <p>
-          <button
-            type="submit"
-          >
-            Go
-          </button>
-        </p>
-      </form>
+        </Form.Group>
+        <Button type="submit">Go</Button>
+      </Form>
+
       <h2>Upcoming Events</h2>
       <ul>
         <li>Meet Alex at the park at 1pm</li>
