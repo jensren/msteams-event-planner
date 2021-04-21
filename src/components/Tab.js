@@ -16,7 +16,7 @@ import EventLaunch from './tabComponents/EventLaunch';
  * of your app.
  */
 class Tab extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       context: {}
@@ -25,18 +25,39 @@ class Tab extends React.Component {
 
   //React lifecycle method that gets called once a component has finished mounting
   //Learn more: https://reactjs.org/docs/react-component.html#componentdidmount
-  componentDidMount(){
+  componentDidMount() {
     // Get the user context from Teams and set it in the state
     microsoftTeams.getContext((context, error) => {
       this.setState({
         context: context
       });
     });
+    microsoftTeams.registerOnThemeChangeHandler(theme => {
+      if (theme !== this.state.theme) {
+        this.setState({ theme });
+      }
+    });
     // Next steps: Error handling using the error object
   }
 
 
   render() {
+    const isTheme = this.state.theme
+    
+    let newTheme
+
+    if (isTheme === "default") {
+      newTheme = {
+        backgroundColor: "#EEF1F5",
+        color: "#16233A"
+      };
+    } else {
+      newTheme = {
+        backgroundColor: "#2B2B30",
+        color: "#FFFFFF"
+      };
+    }
+
     return (
       <React.Fragment>
         <h1>Events Manager</h1>
@@ -44,7 +65,7 @@ class Tab extends React.Component {
           <Route exact path="/tab" component={Dashboard} />
           <Route path="/tab/new-event" component={EventLaunch} />
         </Switch>
-      </React.Fragment> 
+      </React.Fragment>
     );
   }
 }
