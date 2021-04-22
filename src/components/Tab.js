@@ -4,7 +4,9 @@
 import React from 'react';
 import './App.css';
 import * as microsoftTeams from "@microsoft/teams-js";
+import { Login } from "@microsoft/mgt-react"
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+
 
 // Component imports
 
@@ -32,6 +34,7 @@ class Tab extends React.Component {
         context: context
       });
     });
+    
     microsoftTeams.registerOnThemeChangeHandler(theme => {
       if (theme !== this.state.theme) {
         this.setState({ theme });
@@ -43,7 +46,7 @@ class Tab extends React.Component {
 
   render() {
     const isTheme = this.state.theme
-    
+
     let newTheme
 
     if (isTheme === "default") {
@@ -61,6 +64,7 @@ class Tab extends React.Component {
     return (
       <React.Fragment>
         <h1>Events Manager</h1>
+        <Login />
         <Switch>
           <Route exact path="/tab" component={Dashboard} />
           <Route path="/tab/new-event" component={EventLaunch} />
