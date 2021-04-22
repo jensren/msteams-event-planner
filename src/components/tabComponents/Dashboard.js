@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 
 export default function Dashboard(props) {
@@ -11,7 +14,7 @@ export default function Dashboard(props) {
     e.preventDefault();
     props.history.push({
       pathname: '/tab/new-event',
-      state: {query: eventQuery},
+      state: { query: eventQuery },
     });
   }
 
@@ -21,19 +24,28 @@ export default function Dashboard(props) {
 
   return (
     <React.Fragment>
+      
       <h2>Add a new event</h2>
       <Form
         onSubmit={handleSubmit}
       >
         <Form.Group>
-          <Form.Control
-            type="input" 
-            placeholder="e.g. have lunch with my boss" 
-            aria-label="create an event"
-            onChange={handleChange}
-          />
+          <Container fluid>
+            <Row>
+              <Col>
+                <Form.Control
+                  type="input"
+                  placeholder="e.g. have lunch with my boss"
+                  aria-label="create an event"
+                  onChange={handleChange}
+                />
+              </Col>
+              <Col>
+                <Button type="submit">Go</Button>
+              </Col>
+            </Row>
+          </Container>
         </Form.Group>
-        <Button type="submit">Go</Button>
       </Form>
 
       <h2>Upcoming Events</h2>
@@ -41,6 +53,6 @@ export default function Dashboard(props) {
         <li>Meet Alex at the park at 1pm</li>
         <li>Teams call with Anna at 3pm</li>
       </ul>
-    </React.Fragment>     
+    </React.Fragment>
   );
 }
