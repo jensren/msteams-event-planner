@@ -6,11 +6,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import './App.css';
 import * as microsoftTeams from "@microsoft/teams-js";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Providers, TeamsProvider } from '@microsoft/mgt';
+import { MsalProvider } from '@microsoft/mgt-msal-provider';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Privacy from "./Privacy";
 import TermsOfUse from "./TermsOfUse";
 import Tab from "./Tab";
+import { config } from "../config";
 
 /**
  * The main app which handles the initialization and routing
@@ -20,13 +23,22 @@ function App() {
 
   // Initialize the Microsoft Teams SDK
   microsoftTeams.initialize();
+  TeamsProvider.microsoftTeamsLib = microsoftTeams;
+
+  Providers.globalProvider = new TeamsProvider(config)
+  
 
   // Display the app home page hosted in Teams
   return (
     <Router>
-      <Route exact path="/privacy" component={Privacy} />
-      <Route exact path="/termsofuse" component={TermsOfUse} />
-      <Route path="/tab" component={Tab} />
+      <Switch>
+        <Route exact path="/privacy" component={Privacy} />
+        <Route exact path="/termsofuse" component={TermsOfUse} />
+        <Route path="/tab" component={Tab} />
+        <Route path="/">
+          <h1>404: Path not found</h1>
+        </Route>
+      </Switch>
     </Router>
   );
 }
