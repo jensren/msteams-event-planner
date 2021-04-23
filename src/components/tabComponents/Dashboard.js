@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { Agenda } from '@microsoft/mgt-react'
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -49,10 +51,7 @@ export default function Dashboard(props) {
       </Form>
 
       <h2>Upcoming Events</h2>
-      <ul>
-        <li>Meet Alex at the park at 1pm</li>
-        <li>Teams call with Anna at 3pm</li>
-      </ul>
+      <Agenda />
     </React.Fragment>
   );
 }
