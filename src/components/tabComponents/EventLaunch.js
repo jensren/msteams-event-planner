@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { render } from 'react-dom';
 import { Providers } from '@microsoft/mgt';
 import { Client } from '@microsoft/microsoft-graph-client';
+import { getManager, getMeetingTime } from '../GraphService'
+import { dateFormat } from 'dateformat'
 
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -14,41 +16,66 @@ import Spinner from 'react-bootstrap/Spinner';
 
 import map_example from '../../images/map_example.png';
 
-import { getManager } from '../GraphService'
 
+function useDidRender(callback, deps) {
+  const hasMount = useRef(false)
 
-function newEventTemplate(manager) {
+  useEffect(() => {
+    if (!hasMount.current) {
+      callback()
+      hasMount.current = true
+    }
+  }, deps)
+}
+
+function newEventTemplate(manager, meetingTimes) {
+  const timesList = meetingTimes.meetingTimeSuggestions
+    .map(suggestion => {
+      let key = "time-suggest-" + suggestion.order;
+      let dateFormat = require("dateformat");
+      let text = dateFormat(suggestion.meetingTimeSlot.start.dateTime, "dddd, mmmm dS: h:MMtt") 
+        + " to "
+        + dateFormat(suggestion.meetingTimeSlot.end.dateTime, "h:MMtt");
+      return (
+        <Card.Text key={key} className="my-2">
+          {text}
+        </Card.Text>
+      );
+    });
 
   return (
-    <CardDeck>
-      <Card>
-        <Card.Body>
-          <Card.Title><h3>Invite {manager.displayName} for Lunch</h3></Card.Title>
-          <Card.Text>Suggested time: 1pm Tuesday</Card.Text>
-          <Card.Text>Suggested location: 123 XYZ St.</Card.Text>
-        </Card.Body>
-        <Card.Footer>
-          <Card.Link href="#">{manager.displayName}'s Route</Card.Link>
-        </Card.Footer>
-      </Card>
-      <Card>
-        <Card.Body>
-          <Card.Title><h3>Map</h3></Card.Title>
-          <p>Estimated driving time: 15 mins</p>
-        </Card.Body>
-        <Card.Img src={map_example} />
-      </Card>
-      <Card>
-        <Card.Body>
-          <Card.Title><h3>Suggested Restaurants</h3></Card.Title>
-          <ListGroup>
-            <ListGroup.Item>Yuzu Sushi</ListGroup.Item>
-            <ListGroup.Item>Nico's Sandwiches</ListGroup.Item>
-            <ListGroup.Item>Roman Pizzeria</ListGroup.Item>
-          </ListGroup>
-        </Card.Body>
-      </Card>
-    </CardDeck>
+    <React.Fragment>
+      <CardDeck>
+        <Card>
+          <Card.Body>
+            <Card.Title><h3>Invite {manager.displayName} for Lunch</h3></Card.Title>
+            <Card.Subtitle className="my-3">Suggested Times</Card.Subtitle>
+            {timesList}
+          </Card.Body>
+          <Card.Footer>
+            <Card.Link href="#">{manager.displayName}'s Route</Card.Link>
+          </Card.Footer>
+        </Card>
+        <Card>
+          <Card.Body>
+            <Card.Title><h3>Map</h3></Card.Title>
+            <p>Estimated driving time: 15 mins</p>
+          </Card.Body>
+          <Card.Img src={map_example} />
+        </Card>
+        <Card>
+          <Card.Body>
+            <Card.Title><h3>Suggested Restaurants</h3></Card.Title>
+            <ListGroup>
+              <ListGroup.Item>Yuzu Sushi</ListGroup.Item>
+              <ListGroup.Item>Nico's Sandwiches</ListGroup.Item>
+              <ListGroup.Item>Roman Pizzeria</ListGroup.Item>
+            </ListGroup>
+          </Card.Body>
+        </Card>
+      </CardDeck>
+      <Button className="my-3">Submit Event</Button>
+    </React.Fragment>
   );
 };
 
@@ -57,19 +84,25 @@ export default function EventLaunch(props) {
   const query = props.history.location.state.query
 
   const [manager, setManager] = useState(null);
+  const [meetingTimes, setMeetingTimes] = useState(null);
 
 
-  const options = {
-    authProvider: Providers.globalProvider,
-  };
+  useDidRender(() => {
+    console.log("Render function")
 
-  const client = Client.initWithMiddleware(options);
+    const options = {
+      authProvider: Providers.globalProvider,
+    };
 
-  async function pageLoad() {
-    setManager(await getManager(client));
-  }
+    const client = Client.initWithMiddleware(options);
 
-  pageLoad();
+    async function pageLoad() {
+      setManager(await getManager(client));
+      setMeetingTimes(await getMeetingTime(client));
+    }
+
+    pageLoad();
+  });
 
 
   const loadingTemplate = (
@@ -84,7 +117,7 @@ export default function EventLaunch(props) {
   return (
     <React.Fragment>
       <h2>New Event: {query}</h2>
-      {manager ? newEventTemplate(manager) : loadingTemplate}
+      {manager && meetingTimes ? newEventTemplate(manager, meetingTimes) : loadingTemplate}
 
     </React.Fragment>
   );
