@@ -15,6 +15,7 @@
         "@microsoft/microsoft-graph-client": "^2.2.1",
         "@microsoft/teams-js": "^1.6.0",
         "bootstrap": "^4.6.0",
+        "dateformat": "^4.5.1",
         "react": "^16.13.1",
         "react-bootstrap": "^1.5.2",
         "react-dom": "^16.13.1",
