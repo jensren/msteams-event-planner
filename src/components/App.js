@@ -7,7 +7,6 @@ import React from 'react';
 import './App.css';
 import * as microsoftTeams from "@microsoft/teams-js";
 import { Providers, TeamsProvider } from '@microsoft/mgt';
-import { MsalProvider } from '@microsoft/mgt-msal-provider';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Privacy from "./Privacy";
@@ -26,7 +25,7 @@ function App() {
   TeamsProvider.microsoftTeamsLib = microsoftTeams;
 
   Providers.globalProvider = new TeamsProvider(config)
-  
+
 
   // Display the app home page hosted in Teams
   return (
