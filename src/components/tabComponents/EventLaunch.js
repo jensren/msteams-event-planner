@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { render } from 'react-dom';
+import { Providers } from '@microsoft/mgt';
+import { Client } from '@microsoft/microsoft-graph-client';
 
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -12,36 +14,21 @@ import Spinner from 'react-bootstrap/Spinner';
 
 import map_example from '../../images/map_example.png';
 
+import { getManager } from '../GraphService'
 
 
-export default function EventLaunch(props) {
-  const query = props.history.location.state.query
+function newEventTemplate(manager) {
 
-  const [loaded, setLoaded] = useState(false);
-
-  async function pageLoad() {
-
-  }
-
-
-  const loadingTemplate = (
-    <Container fluid className="py-4">
-      <Row >
-        <Spinner animation="border" className="mx-auto" />
-      </Row>
-    </Container>
-  );
-
-  const newEventTemplate = (
+  return (
     <CardDeck>
       <Card>
         <Card.Body>
-          <Card.Title><h3>Invite Rick for Lunch</h3></Card.Title>
+          <Card.Title><h3>Invite {manager.displayName} for Lunch</h3></Card.Title>
           <Card.Text>Suggested time: 1pm Tuesday</Card.Text>
           <Card.Text>Suggested location: 123 XYZ St.</Card.Text>
         </Card.Body>
         <Card.Footer>
-          <Card.Link href="#">Rick's Route</Card.Link>
+          <Card.Link href="#">{manager.displayName}'s Route</Card.Link>
         </Card.Footer>
       </Card>
       <Card>
@@ -63,12 +50,41 @@ export default function EventLaunch(props) {
       </Card>
     </CardDeck>
   );
+};
+
+
+export default function EventLaunch(props) {
+  const query = props.history.location.state.query
+
+  const [manager, setManager] = useState(null);
+
+
+  const options = {
+    authProvider: Providers.globalProvider,
+  };
+
+  const client = Client.initWithMiddleware(options);
+
+  async function pageLoad() {
+    setManager(await getManager(client));
+  }
+
+  pageLoad();
+
+
+  const loadingTemplate = (
+    <Container fluid className="py-4">
+      <Row >
+        <Spinner animation="border" className="mx-auto" />
+      </Row>
+    </Container>
+  );
 
 
   return (
     <React.Fragment>
       <h2>New Event: {query}</h2>
-      {loaded ? newEventTemplate : loadingTemplate}
+      {manager ? newEventTemplate(manager) : loadingTemplate}
 
     </React.Fragment>
   );
