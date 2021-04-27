@@ -14,21 +14,23 @@ import CardDeck from 'react-bootstrap/CardDeck';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
 
-import map_example from '../../images/map_example.png';
+import { meetingTimeSuggestionsResult } from './testData';
+import DefaultMap from './Map.tsx';
 
 
 function useDidRender(callback, deps) {
-  const hasMount = useRef(false)
+  const hasMount = useRef(false);
 
   useEffect(() => {
     if (!hasMount.current) {
-      callback()
-      hasMount.current = true
+      callback();
+      hasMount.current = true;
     }
-  }, deps)
+  }, deps);
 }
 
 function newEventTemplate(manager, meetingTimes) {
+  console.log(meetingTimes);
   const timesList = meetingTimes.meetingTimeSuggestions
     .map(suggestion => {
       let key = "time-suggest-" + suggestion.order;
@@ -81,27 +83,25 @@ function newEventTemplate(manager, meetingTimes) {
 
 
 export default function EventLaunch(props) {
-  const query = props.history.location.state.query
+  // const query = props.history.location.state.query
 
   const [manager, setManager] = useState(null);
   const [meetingTimes, setMeetingTimes] = useState(null);
 
 
-  useDidRender(() => {
-    console.log("Render function")
-
+  useDidRender(async () => {
     const options = {
       authProvider: Providers.globalProvider,
     };
 
     const client = Client.initWithMiddleware(options);
 
-    async function pageLoad() {
-      setManager(await getManager(client));
-      setMeetingTimes(await getMeetingTime(client));
-    }
+    let temp = await getManager(client)
+    setManager(temp);
+    let meetingData = meetingTimeSuggestionsResult(temp);
+    setMeetingTimes(await getMeetingTime(client, meetingData));
 
-    pageLoad();
+
   });
 
 
@@ -116,8 +116,7 @@ export default function EventLaunch(props) {
 
   return (
     <React.Fragment>
-      <h2>New Event: {query}</h2>
-      {manager && meetingTimes ? newEventTemplate(manager, meetingTimes) : loadingTemplate}
+      {(manager && meetingTimes) ? newEventTemplate(manager, meetingTimes) : loadingTemplate}
 
     </React.Fragment>
   );
