@@ -2,12 +2,20 @@
   text-align: center;
 }
 
+html {
+  padding: 10px;
+}
+
 h1 {
   color: gray;
 }
 
 h2 {
   font-size: 1.2em;
+}
+
+h3 {
+  font-size: 1.1em;
 }
 
 .PropName {

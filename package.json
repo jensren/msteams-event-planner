@@ -17,6 +17,7 @@
         "bootstrap": "^4.6.0",
         "dateformat": "^4.5.1",
         "react": "^16.13.1",
+        "react-azure-maps": "^0.3.0",
         "react-bootstrap": "^1.5.2",
         "react-dom": "^16.13.1",
         "react-router-dom": "^5.1.2",

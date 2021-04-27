@@ -3,7 +3,6 @@ import { render } from 'react-dom';
 import { Providers } from '@microsoft/mgt';
 import { Client } from '@microsoft/microsoft-graph-client';
 import { getManager, getMeetingTime } from '../GraphService'
-import { dateFormat } from 'dateformat'
 
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -35,7 +34,7 @@ function newEventTemplate(manager, meetingTimes) {
     .map(suggestion => {
       let key = "time-suggest-" + suggestion.order;
       let dateFormat = require("dateformat");
-      let text = dateFormat(suggestion.meetingTimeSlot.start.dateTime, "dddd, mmmm dS: h:MMtt") 
+      let text = dateFormat(suggestion.meetingTimeSlot.start.dateTime, "dddd, mmmm dS: h:MMtt")
         + " to "
         + dateFormat(suggestion.meetingTimeSlot.end.dateTime, "h:MMtt");
       return (
@@ -47,11 +46,11 @@ function newEventTemplate(manager, meetingTimes) {
 
   return (
     <React.Fragment>
+      <h2>New Event: Invite {manager.displayName} for Lunch</h2>
       <CardDeck>
         <Card>
           <Card.Body>
-            <Card.Title><h3>Invite {manager.displayName} for Lunch</h3></Card.Title>
-            <Card.Subtitle className="my-3">Suggested Times</Card.Subtitle>
+            <Card.Title><h3>Suggested Times</h3></Card.Title>
             {timesList}
           </Card.Body>
           <Card.Footer>
@@ -63,7 +62,7 @@ function newEventTemplate(manager, meetingTimes) {
             <Card.Title><h3>Map</h3></Card.Title>
             <p>Estimated driving time: 15 mins</p>
           </Card.Body>
-          <Card.Img src={map_example} />
+          <DefaultMap />
         </Card>
         <Card>
           <Card.Body>
