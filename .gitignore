@@ -24,3 +24,4 @@ yarn-debug.log*
 yarn-error.log*
 development-log.pages
 src/config.js
+src/scratch.js
