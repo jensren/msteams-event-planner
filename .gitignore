@@ -18,10 +18,12 @@
 .env.test.local
 .env.production.local
 .env
+src/react-app-env.d.ts
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
 development-log.pages
 src/config.js
 src/scratch.js
