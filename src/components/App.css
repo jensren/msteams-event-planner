@@ -35,3 +35,7 @@ h3 {
 .btn-group-sm .btn-secondary {
   font-size: 0.75em;
 }
+
+.dashboard-deck {
+  min-height: 60vh;
+}

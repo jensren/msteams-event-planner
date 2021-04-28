@@ -49,7 +49,7 @@ function newEventTemplate(manager, meetingTimes, selfCoords) {
   return (
     <React.Fragment>
       <h2>New Event: Invite {manager.displayName} for Lunch</h2>
-      <CardDeck>
+      <CardDeck className="dashboard-deck">
         <Card>
           <Card.Body>
             <Card.Title><h3>Suggested Times</h3></Card.Title>

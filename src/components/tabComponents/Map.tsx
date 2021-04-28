@@ -11,7 +11,7 @@ const option: IAzureMapOptions = {
 }
 
 const MapComponent: React.FC = () => (
-    <div className="w-100 h-75">
+    <div className="w-100 h-100">
         <AzureMap options={option}>
         </AzureMap>
     </div>
