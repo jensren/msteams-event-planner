@@ -3,10 +3,10 @@ import { AzureMapsProvider } from 'react-azure-maps';
 import React from 'react';
 import MapController from './MapController';
 
-const MapWrapper = () => {
+function MapWrapper(props: {center: {"lat": number, "lon": number}}) {
   return (
     <AzureMapsProvider>
-        <MapController />
+        <MapController center={props.center}/>
     </AzureMapsProvider>
   );
 };

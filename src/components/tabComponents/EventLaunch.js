@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { render } from 'react-dom';
 import { Providers } from '@microsoft/mgt';
 import { Client } from '@microsoft/microsoft-graph-client';
-import { getManager, getMeetingTime } from '../GraphService'
+import { getManager, getMeetingTime } from './GraphService';
+import { addressSearch } from './MapService';
 
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -13,7 +14,7 @@ import CardDeck from 'react-bootstrap/CardDeck';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
 
-import { meetingTimeSuggestionsResult } from './testData';
+import { meetingTimeSuggestionsResult, selfLocation, managerLocation } from './testData';
 import MapWrapper from './MapWrapper';
 
 
@@ -28,8 +29,9 @@ function useDidRender(callback, deps) {
   }, deps);
 }
 
-function newEventTemplate(manager, meetingTimes) {
-  console.log(meetingTimes);
+function newEventTemplate(manager, meetingTimes, selfCoords) {
+
+  
   const timesList = meetingTimes.meetingTimeSuggestions
     .map(suggestion => {
       let key = "time-suggest-" + suggestion.order;
@@ -62,7 +64,7 @@ function newEventTemplate(manager, meetingTimes) {
             <Card.Title><h3>Map</h3></Card.Title>
             <p>Estimated driving time: 15 mins</p>
           </Card.Body>
-          <MapWrapper />
+          <MapWrapper center={selfCoords}/>
         </Card>
         <Card>
           <Card.Body>
@@ -86,6 +88,7 @@ export default function EventLaunch(props) {
 
   const [manager, setManager] = useState(null);
   const [meetingTimes, setMeetingTimes] = useState(null);
+  const [selfCoords, setSelfCoords] = useState(null);
 
 
   useDidRender(async () => {
@@ -99,7 +102,7 @@ export default function EventLaunch(props) {
     setManager(temp);
     let meetingData = meetingTimeSuggestionsResult(temp);
     setMeetingTimes(await getMeetingTime(client, meetingData));
-
+    setSelfCoords(addressSearch(selfLocation));
 
   });
 
@@ -115,7 +118,10 @@ export default function EventLaunch(props) {
 
   return (
     <React.Fragment>
-      {(manager && meetingTimes) ? newEventTemplate(manager, meetingTimes) : loadingTemplate}
+      {(manager && meetingTimes && selfCoords) ? 
+        newEventTemplate(manager, meetingTimes, selfCoords) 
+        : loadingTemplate
+      }
 
     </React.Fragment>
   );

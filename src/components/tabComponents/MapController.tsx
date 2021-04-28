@@ -9,12 +9,9 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 const dataSourceRef = new source.DataSource();
 const layerRef = new layer.SymbolLayer(dataSourceRef);
 
-const MapController = () => {
+function MapController(props: {center: {"lat": number, "lon": number}}) {
   // Here you use mapRef from context
   const { mapRef, isMapReady } = useContext<IAzureMapsContextProps>(AzureMapsContext);
-  console.log("AzureMapsContext: ", AzureMapsContext);
-  console.log("mapRef: ", mapRef);
-  console.log("isMapReady: ", isMapReady);
   const [showTileBoundaries, setShowTileBoundaries] = useState(true);
 
   const changeMapCenter = () => {
@@ -25,13 +22,11 @@ const MapController = () => {
   };
 
   useEffect(() => {
-    console.log("Before mapRef if statement");
-    console.log("mapRef right before if: ", mapRef);
     if (mapRef) {
       // Simple Style modification
       console.log("mapRef exsits, ready to set the map style");
       mapRef.setStyle({ showTileBoundaries: !showTileBoundaries });
-      mapRef.setCamera({ center: getRandomPosition() });
+      mapRef.setCamera({ center: [props.center.lat, props.center.lon] });
     }
   }, [showTileBoundaries]);
 

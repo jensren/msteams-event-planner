@@ -65,3 +65,6 @@ export function meetingTimeSuggestionsResult(manager) {
   };
 }
 
+
+export const selfLocation = "30 Hudson St Jersey City, NJ 07302";
+export const managerLocation = "10 Hudson Yards New York, NY 1000";
