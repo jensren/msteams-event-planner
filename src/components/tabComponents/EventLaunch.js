@@ -102,7 +102,7 @@ export default function EventLaunch(props) {
     setManager(temp);
     let meetingData = meetingTimeSuggestionsResult(temp);
     setMeetingTimes(await getMeetingTime(client, meetingData));
-    setSelfCoords(addressSearch(selfLocation));
+    setSelfCoords(await addressSearch(selfLocation));
 
   });
 
