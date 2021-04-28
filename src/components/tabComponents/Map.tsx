@@ -10,13 +10,11 @@ const option: IAzureMapOptions = {
     },
 }
 
-const DefaultMap: React.FC = () => (
-    <div style={{height: '300px'}}>
-        <AzureMapsProvider>
-            <AzureMap options={option}>
-            </AzureMap>
-        </AzureMapsProvider>
+const MapComponent: React.FC = () => (
+    <div className="w-100 h-75">
+        <AzureMap options={option}>
+        </AzureMap>
     </div>
 )
 
-export default DefaultMap;
+export default MapComponent;

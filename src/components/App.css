@@ -31,3 +31,7 @@ h3 {
 .Error {
   color: red;
 }
+
+.btn-group-sm .btn-secondary {
+  font-size: 0.75em;
+}

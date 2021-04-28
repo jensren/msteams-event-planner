@@ -14,7 +14,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
 
 import { meetingTimeSuggestionsResult } from './testData';
-import DefaultMap from './Map.tsx';
+import MapWrapper from './MapWrapper';
 
 
 function useDidRender(callback, deps) {
@@ -62,7 +62,7 @@ function newEventTemplate(manager, meetingTimes) {
             <Card.Title><h3>Map</h3></Card.Title>
             <p>Estimated driving time: 15 mins</p>
           </Card.Body>
-          <DefaultMap />
+          <MapWrapper />
         </Card>
         <Card>
           <Card.Body>
