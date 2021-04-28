@@ -1,15 +1,16 @@
+import { svgIconDisplayName } from '@fluentui/react-icons-northstar';
 import { mapSubscription } from '../../config';
 
 export async function addressSearch(address) {
-  // takes address string and returns the lagitude and longitude
-  let url = `https://atlas.microsoft.com/search/address/json?subscription-key=${mapSubscription}&api-version=1.0&query=${encodeURIComponent(address)}`;
+  // takes address string and returns the latitude and longitude
+
+  const url = new URL("https://atlas.microsoft.com/search/address/json");
+  url.search = new URLSearchParams({
+    "subscription-key": mapSubscription, 
+    "api-version": "1.0", 
+    "query": address,
+  });
 
   let fetchResult = await (await fetch(url)).json();
-  try {
-    let ret = fetchResult.results[0].position;
-    return ret;
-  } catch {
-    console.log("Could not get coordinates from address search");
-    console.log("Fetch result: ", fetchResult);
-  }
+  return fetchResult.results[0].position;
 }
