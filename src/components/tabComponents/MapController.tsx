@@ -24,9 +24,7 @@ function MapController(props: {center: {"lat": number, "lon": number}}) {
   useEffect(() => {
     if (mapRef) {
       // Simple Style modification
-      console.log("mapRef exsits, ready to set the map style");
       mapRef.setStyle({ showTileBoundaries: !showTileBoundaries });
-      mapRef.setCamera({ center: [props.center.lat, props.center.lon] });
     }
   }, [showTileBoundaries]);
 
@@ -40,6 +38,7 @@ function MapController(props: {center: {"lat": number, "lon": number}}) {
       // Need to add source and layer to map on init and ready
       mapRef.sources.add(dataSourceRef);
       mapRef.layers.add(layerRef);
+      mapRef.setCamera({ center: [props.center.lon, props.center.lat] });
     }
   }, [isMapReady]);
 
