@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Providers } from '@microsoft/mgt';
 import { Client } from '@microsoft/microsoft-graph-client';
 import { getManager, getMeetingTime } from './GraphService';
-import { addressSearch } from './MapService';
+import { addressSearch, getMidpoint } from './MapService';
 
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -12,7 +12,7 @@ import CardDeck from 'react-bootstrap/CardDeck';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
 
-import { meetingTimeSuggestionsResult, selfLocation, managerLocation } from './testData';
+import { meetingTimeSuggestionsResult, selfLocation, managerLocation, fraction } from './testData';
 import MapWrapper from './MapWrapper';
 
 
@@ -27,9 +27,11 @@ function useDidRender(callback, deps) {
   }, deps);
 }
 
-function newEventTemplate(manager, meetingTimes, selfCoords) {
+function newEventTemplate(manager, meetingTimes, selfCoords, managerCoords) {
 
-  
+  const midpoint = getMidpoint(selfCoords, managerCoords, fraction);
+  console.log("Midpoint: ", midpoint);
+
   const timesList = meetingTimes.meetingTimeSuggestions
     .map(suggestion => {
       let key = "time-suggest-" + suggestion.order;
@@ -87,6 +89,7 @@ export default function EventLaunch(props) {
   const [manager, setManager] = useState(null);
   const [meetingTimes, setMeetingTimes] = useState(null);
   const [selfCoords, setSelfCoords] = useState(null);
+  const [managerCoords, setManagerCoords] = useState(null);
 
 
   useDidRender(async () => {
@@ -123,8 +126,8 @@ export default function EventLaunch(props) {
 
   return (
     <React.Fragment>
-      {(manager && meetingTimes && selfCoords) ? 
-        newEventTemplate(manager, meetingTimes, selfCoords) 
+      {(manager && meetingTimes && selfCoords && managerCoords) ? 
+        newEventTemplate(manager, meetingTimes, selfCoords, managerCoords) 
         : loadingTemplate
       }
 
