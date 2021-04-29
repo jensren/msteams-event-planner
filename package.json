@@ -1,46 +1,52 @@
 {
-    "name": "microsoft-teams-ext",
-    "version": "0.1.0",
-    "msteams": {
-        "teamsAppId": "abe465af-b99b-4907-9377-1e81cc805146"
-    },
-    "private": true,
-    "dependencies": {
-        "@azure/msal-browser": "^2.14.1",
-        "@fluentui/react-northstar": "^0.49.0",
-        "@microsoft/mgt": "^2.1.0",
-        "@microsoft/mgt-element": "^2.1.0",
-        "@microsoft/mgt-msal-provider": "^2.1.0",
-        "@microsoft/mgt-react": "^2.1.0",
-        "@microsoft/microsoft-graph-client": "^2.2.1",
-        "@microsoft/teams-js": "^1.6.0",
-        "bootstrap": "^4.6.0",
-        "dateformat": "^4.5.1",
-        "react": "^16.13.1",
-        "react-azure-maps": "^0.3.0",
-        "react-bootstrap": "^1.5.2",
-        "react-dom": "^16.13.1",
-        "react-router-dom": "^5.1.2",
-        "react-scripts": "^4.0.3"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "eject": "react-scripts eject"
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    },
-    "devDependencies": {
-        "@microsoft/microsoft-graph-types": "^1.36.0"
-    }
+  "name": "microsoft-teams-ext",
+  "version": "0.1.0",
+  "msteams": {
+    "teamsAppId": "abe465af-b99b-4907-9377-1e81cc805146"
+  },
+  "private": true,
+  "dependencies": {
+    "@azure/msal-browser": "^2.14.1",
+    "@fluentui/react-northstar": "^0.49.0",
+    "@microsoft/mgt": "^2.1.0",
+    "@microsoft/mgt-element": "^2.1.0",
+    "@microsoft/mgt-msal-provider": "^2.1.0",
+    "@microsoft/mgt-react": "^2.1.0",
+    "@microsoft/microsoft-graph-client": "^2.2.1",
+    "@microsoft/teams-js": "^1.6.0",
+    "bootstrap": "^4.6.0",
+    "dateformat": "^4.5.1",
+    "react": "^16.13.1",
+    "react-azure-maps": "^0.3.0",
+    "react-bootstrap": "^1.5.2",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "^4.0.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@microsoft/microsoft-graph-types": "^1.36.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  }
 }
