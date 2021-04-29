@@ -1,4 +1,3 @@
 - if logged out and try to add event, unhandled timeout error
 - suggested times is checking times using wrong time zone (probably), not correctly determining when there is a time conflict
 - when logging in, sometimes the calendar and login are not displayed correctly after login on Teams
--horizontal scrollbar in EventLaunch page
