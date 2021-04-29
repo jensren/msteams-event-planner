@@ -26,7 +26,7 @@ function MapController(props: {center: {"lat": number, "lon": number}}) {
       // Simple Style modification
       mapRef.setStyle({ showTileBoundaries: !showTileBoundaries });
     }
-  }, [showTileBoundaries]);
+  }, [showTileBoundaries, mapRef]);
 
   const toggleTitleBoundaries = () => {
     setShowTileBoundaries((prev) => !prev);
@@ -40,7 +40,7 @@ function MapController(props: {center: {"lat": number, "lon": number}}) {
       mapRef.layers.add(layerRef);
       mapRef.setCamera({ center: [props.center.lon, props.center.lat] });
     }
-  }, [isMapReady]);
+  }, [isMapReady, mapRef, props.center.lon, props.center.lat]);
 
   // Util function to add pin
   const addRandomMarker = () => {

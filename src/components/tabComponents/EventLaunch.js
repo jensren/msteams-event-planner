@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { render } from 'react-dom';
 import { Providers } from '@microsoft/mgt';
 import { Client } from '@microsoft/microsoft-graph-client';
 import { getManager, getMeetingTime } from './GraphService';
@@ -8,7 +7,6 @@ import { addressSearch } from './MapService';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import CardDeck from 'react-bootstrap/CardDeck';
 import ListGroup from 'react-bootstrap/ListGroup';

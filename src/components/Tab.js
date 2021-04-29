@@ -5,7 +5,7 @@ import React from 'react';
 import './App.css';
 import * as microsoftTeams from "@microsoft/teams-js";
 import { Login } from "@microsoft/mgt-react"
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 
 // Component imports
@@ -45,21 +45,6 @@ class Tab extends React.Component {
 
 
   render() {
-    const isTheme = this.state.theme
-
-    let newTheme
-
-    if (isTheme === "default") {
-      newTheme = {
-        backgroundColor: "#EEF1F5",
-        color: "#16233A"
-      };
-    } else {
-      newTheme = {
-        backgroundColor: "#2B2B30",
-        color: "#FFFFFF"
-      };
-    }
 
     return (
       <React.Fragment>
