@@ -26,7 +26,7 @@ function MapController(props: {center: {"lat": number, "lon": number}}) {
       // Simple Style modification
       mapRef.setStyle({ showTileBoundaries: !showTileBoundaries });
     }
-  }, [showTileBoundaries, mapRef]);
+  }, [showTileBoundaries]);
 
   const toggleTitleBoundaries = () => {
     setShowTileBoundaries((prev) => !prev);
