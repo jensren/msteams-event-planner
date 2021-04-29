@@ -96,12 +96,19 @@ export default function EventLaunch(props) {
 
     const client = Client.initWithMiddleware(options);
 
-    let temp = await getManager(client)
-    setManager(temp);
-    let meetingData = meetingTimeSuggestionsResult(temp);
-    setMeetingTimes(await getMeetingTime(client, meetingData));
-    setSelfCoords(await addressSearch(selfLocation));
+    const selfCoordsPromise = addressSearch(selfLocation);
 
+    const tempManager = await getManager(client);
+    setManager(tempManager);
+
+    const meetingData = meetingTimeSuggestionsResult(tempManager);
+    const meetingTimesPromise = getMeetingTime(client, meetingData);
+
+    const managerCoordsPromise = addressSearch(managerLocation);
+
+    setSelfCoords(await selfCoordsPromise);
+    setManagerCoords(await managerCoordsPromise);
+    setMeetingTimes(await meetingTimesPromise);
   });
 
 
