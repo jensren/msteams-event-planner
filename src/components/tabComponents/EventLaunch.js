@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Providers } from '@microsoft/mgt';
 import { Client } from '@microsoft/microsoft-graph-client';
 import { getManager, getMeetingTime } from './GraphService';
-import { addressSearch, getMidpoint } from './MapService';
+import { addressSearch, getMidpoint, poiSearch } from './MapService';
 
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -12,7 +12,7 @@ import CardDeck from 'react-bootstrap/CardDeck';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
 
-import { meetingTimeSuggestionsResult, selfLocation, managerLocation, fraction } from './testData';
+import { meetingTimeSuggestionsResult, selfLocation, managerLocation, fraction, poiQuery } from './testData';
 import MapWrapper from './MapWrapper';
 
 
@@ -27,10 +27,70 @@ function useDidRender(callback, deps) {
   }, deps);
 }
 
-function newEventTemplate(manager, meetingTimes, selfCoords, managerCoords) {
 
-  const midpoint = getMidpoint(selfCoords, managerCoords, fraction);
-  console.log("Midpoint: ", midpoint);
+export default function EventLaunch(props) {
+  // const query = props.history.location.state.query
+
+  const [manager, setManager] = useState(null);
+  const [meetingTimes, setMeetingTimes] = useState(null);
+  const [selfCoords, setSelfCoords] = useState(null);
+  const [managerCoords, setManagerCoords] = useState(null);
+  const [poiLst, setPoiLst] = useState(null);
+
+
+  useDidRender(async () => {
+    const options = {
+      authProvider: Providers.globalProvider,
+    };
+
+    const client = Client.initWithMiddleware(options);
+
+    const selfCoordsPromise = addressSearch(selfLocation);
+
+    const tempManager = await getManager(client);
+    setManager(tempManager);
+
+    const meetingData = meetingTimeSuggestionsResult(tempManager);
+    const meetingTimesPromise = getMeetingTime(client, meetingData);
+
+    const managerCoordsPromise = addressSearch(managerLocation);
+
+
+    const tempSelfCoords = await selfCoordsPromise;
+    const tempManagerCoords = await managerCoordsPromise
+    setSelfCoords(tempSelfCoords);
+    setManagerCoords(tempManagerCoords);
+
+    const midpoint = getMidpoint(tempSelfCoords, tempManagerCoords, fraction);  // [longitude, latitude]
+    const poiLstPromise = poiSearch(midpoint[0], midpoint[1], poiQuery);
+
+    setMeetingTimes(await meetingTimesPromise);
+    setPoiLst(await poiLstPromise);
+  });
+
+
+  return (
+    <React.Fragment>
+      {(manager && meetingTimes && selfCoords && poiLst) ? 
+        newEventTemplate(manager, meetingTimes, selfCoords, poiLst) 
+        : loadingTemplate
+      }
+
+    </React.Fragment>
+  );
+}
+
+
+const loadingTemplate = (
+  <Container fluid className="py-4">
+    <Row >
+      <Spinner animation="border" className="mx-auto" />
+    </Row>
+  </Container>
+);
+
+
+function newEventTemplate(manager, meetingTimes, selfCoords, poiLst) {
 
   const timesList = meetingTimes.meetingTimeSuggestions
     .map(suggestion => {
@@ -81,56 +141,3 @@ function newEventTemplate(manager, meetingTimes, selfCoords, managerCoords) {
     </React.Fragment>
   );
 };
-
-
-export default function EventLaunch(props) {
-  // const query = props.history.location.state.query
-
-  const [manager, setManager] = useState(null);
-  const [meetingTimes, setMeetingTimes] = useState(null);
-  const [selfCoords, setSelfCoords] = useState(null);
-  const [managerCoords, setManagerCoords] = useState(null);
-
-
-  useDidRender(async () => {
-    const options = {
-      authProvider: Providers.globalProvider,
-    };
-
-    const client = Client.initWithMiddleware(options);
-
-    const selfCoordsPromise = addressSearch(selfLocation);
-
-    const tempManager = await getManager(client);
-    setManager(tempManager);
-
-    const meetingData = meetingTimeSuggestionsResult(tempManager);
-    const meetingTimesPromise = getMeetingTime(client, meetingData);
-
-    const managerCoordsPromise = addressSearch(managerLocation);
-
-    setSelfCoords(await selfCoordsPromise);
-    setManagerCoords(await managerCoordsPromise);
-    setMeetingTimes(await meetingTimesPromise);
-  });
-
-
-  const loadingTemplate = (
-    <Container fluid className="py-4">
-      <Row >
-        <Spinner animation="border" className="mx-auto" />
-      </Row>
-    </Container>
-  );
-
-
-  return (
-    <React.Fragment>
-      {(manager && meetingTimes && selfCoords && managerCoords) ? 
-        newEventTemplate(manager, meetingTimes, selfCoords, managerCoords) 
-        : loadingTemplate
-      }
-
-    </React.Fragment>
-  );
-}

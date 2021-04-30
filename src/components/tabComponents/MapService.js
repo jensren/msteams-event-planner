@@ -11,7 +11,7 @@ export async function addressSearch(address) {
     "query": address,
   });
 
-  let fetchResult = await (await fetch(url)).json();
+  const fetchResult = await (await fetch(url)).json();
   return fetchResult.results[0].position;
 }
 
@@ -21,4 +21,29 @@ export function getMidpoint(origin, destination, fraction) {
   const pos2 = new atlas.data.Position(destination.lon, destination.lat);
   const result = atlas.math.interpolate(pos1, pos2, fraction)
   return result;
+}
+
+export async function poiSearch(lon, lat, query) {
+  const url = new URL("https://atlas.microsoft.com/search/poi/category/json");
+  url.search = new URLSearchParams({
+    "subscription-key": mapSubscription, 
+    "api-version": "1.0",
+    "query": query,
+    "lat": lat,
+    "lon": lon,
+    "limit": 6,
+  });
+
+  const fetchResult = await (await fetch(url)).json();
+  console.log("fetchResult: ", fetchResult);
+
+  let ret = fetchResult.results.map(item => (
+    {
+      "name": item.poi.name,
+      "address": item.address.freeformAddress,
+      "position": item.position,
+    }
+  ));
+
+  return ret;
 }
