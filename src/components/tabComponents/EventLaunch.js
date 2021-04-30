@@ -4,16 +4,12 @@ import { Client } from '@microsoft/microsoft-graph-client';
 import { getManager, getMeetingTime } from './GraphService';
 import { addressSearch, getMidpoint, poiSearch } from './MapService';
 
-import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Card from 'react-bootstrap/Card';
-import CardDeck from 'react-bootstrap/CardDeck';
-import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
 
 import { meetingTimeSuggestionsResult, selfLocation, managerLocation, fraction, poiQuery } from './testData';
-import MapWrapper from './MapWrapper';
+import NewEventTemplate from './NewEvent';
 
 
 function useDidRender(callback, deps) {
@@ -34,8 +30,8 @@ export default function EventLaunch(props) {
   const [manager, setManager] = useState(null);
   const [meetingTimes, setMeetingTimes] = useState(null);
   const [selfCoords, setSelfCoords] = useState(null);
-  const [managerCoords, setManagerCoords] = useState(null);
   const [poiLst, setPoiLst] = useState(null);
+  const [chosenPoi, setChosenPoi] = useState(null);
 
 
   useDidRender(async () => {
@@ -59,7 +55,6 @@ export default function EventLaunch(props) {
     const tempSelfCoords = await selfCoordsPromise;
     const tempManagerCoords = await managerCoordsPromise
     setSelfCoords(tempSelfCoords);
-    setManagerCoords(tempManagerCoords);
 
     const midpoint = getMidpoint(tempSelfCoords, tempManagerCoords, fraction);  // [longitude, latitude]
     const poiLstPromise = poiSearch(midpoint[0], midpoint[1], poiQuery);
@@ -68,12 +63,32 @@ export default function EventLaunch(props) {
     setPoiLst(await poiLstPromise);
   });
 
+  function isLoading(loading) {
+    if (loading) {
+      return (
+        <Container fluid className="py-4">
+          <Row >
+            <Spinner animation="border" className="mx-auto" />
+          </Row>
+        </Container>
+      );
+    } else {
+      return (
+        <NewEventTemplate 
+          manager={manager}
+          meetingTimes={meetingTimes}
+          selfCoords={selfCoords}
+          poiLst={poiLst} 
+        />
+      );
+    }
+  }
+
 
   return (
     <React.Fragment>
-      {(manager && meetingTimes && selfCoords && poiLst) ? 
-        newEventTemplate(manager, meetingTimes, selfCoords, poiLst) 
-        : loadingTemplate
+      {(manager && meetingTimes && selfCoords && poiLst) ?
+        isLoading(false) : isLoading(true)
       }
 
     </React.Fragment>
@@ -81,7 +96,7 @@ export default function EventLaunch(props) {
 }
 
 
-const loadingTemplate = (
+const LoadingTemplate = (
   <Container fluid className="py-4">
     <Row >
       <Spinner animation="border" className="mx-auto" />
@@ -90,54 +105,4 @@ const loadingTemplate = (
 );
 
 
-function newEventTemplate(manager, meetingTimes, selfCoords, poiLst) {
 
-  const timesList = meetingTimes.meetingTimeSuggestions
-    .map(suggestion => {
-      let key = "time-suggest-" + suggestion.order;
-      let dateFormat = require("dateformat");
-      let text = dateFormat(suggestion.meetingTimeSlot.start.dateTime, "dddd, mmmm dS: h:MMtt")
-        + " to "
-        + dateFormat(suggestion.meetingTimeSlot.end.dateTime, "h:MMtt");
-      return (
-        <Card.Text key={key} className="my-2">
-          {text}
-        </Card.Text>
-      );
-    });
-
-  return (
-    <React.Fragment>
-      <h2>New Event: Invite {manager.displayName} for Lunch</h2>
-      <CardDeck className="dashboard-deck">
-        <Card>
-          <Card.Body>
-            <Card.Title><h3>Suggested Times</h3></Card.Title>
-            {timesList}
-          </Card.Body>
-          <Card.Footer>
-            <Card.Link href="#">{manager.displayName}'s Route</Card.Link>
-          </Card.Footer>
-        </Card>
-        <Card>
-          <Card.Body>
-            <Card.Title><h3>Map</h3></Card.Title>
-            <p>Estimated driving time: 15 mins</p>
-          </Card.Body>
-          <MapWrapper center={selfCoords}/>
-        </Card>
-        <Card>
-          <Card.Body>
-            <Card.Title><h3>Suggested Restaurants</h3></Card.Title>
-            <ListGroup>
-              <ListGroup.Item>Yuzu Sushi</ListGroup.Item>
-              <ListGroup.Item>Nico's Sandwiches</ListGroup.Item>
-              <ListGroup.Item>Roman Pizzeria</ListGroup.Item>
-            </ListGroup>
-          </Card.Body>
-        </Card>
-      </CardDeck>
-      <Button className="my-3">Submit Event</Button>
-    </React.Fragment>
-  );
-};
