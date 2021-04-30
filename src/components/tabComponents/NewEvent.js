@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import CardDeck from 'react-bootstrap/CardDeck';
@@ -6,6 +6,9 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import MapWrapper from './MapWrapper';
 
 function NewEventTemplate(props) {
+
+  const[chosenTime, setChosenTime] = useState(null);
+  const [chosenPoi, setChosenPoi] = useState(null);
 
   const timesLst = props.meetingTimes.meetingTimeSuggestions
     .map(suggestion => {
@@ -15,21 +18,33 @@ function NewEventTemplate(props) {
         + " to "
         + dateFormat(suggestion.meetingTimeSlot.end.dateTime, "h:MMtt");
       return (
-        <Card.Text key={key} className="my-2">
-          {text}
-        </Card.Text>
+        <ListGroup.Item key={key} className="py-2 card-list-group">
+          <Button
+            variant="link"
+            className={chosenTime && chosenTime === text ? "highlight-link" : null}
+            onClick={() => setChosenTime(text)}
+          >
+            {text}
+          </Button>
+        </ListGroup.Item>
       );
     }
     );
 
   const poiLstGroup = props.poiLst
-    .map(poi => (
-      <ListGroup.Item key={"poi-" + poi.name} className="py-2">
-        <Button variant="link">
-          {poi.name}
-        </Button>
-      </ListGroup.Item>
-    )
+    .map(poi => {
+      return (
+        <ListGroup.Item key={"poi-" + poi.name} className="py-2 card-list-group">
+          <Button
+            variant="link"
+            className={chosenPoi && chosenPoi.name === poi.name ? "highlight-link" : null}
+            onClick={() => setChosenPoi(poi)}
+          >
+            {poi.name}
+          </Button>
+        </ListGroup.Item>
+      );
+    }
     );
 
   return (
@@ -39,7 +54,9 @@ function NewEventTemplate(props) {
         <Card>
           <Card.Body>
             <Card.Title><h3>Suggested Times</h3></Card.Title>
-            {timesLst}
+            <ListGroup>
+              {timesLst}
+            </ListGroup>
           </Card.Body>
           <Card.Footer>
             <Button variant="link">{props.manager.displayName}'s Route</Button>

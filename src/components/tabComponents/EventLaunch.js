@@ -31,7 +31,6 @@ export default function EventLaunch(props) {
   const [meetingTimes, setMeetingTimes] = useState(null);
   const [selfCoords, setSelfCoords] = useState(null);
   const [poiLst, setPoiLst] = useState(null);
-  const [chosenPoi, setChosenPoi] = useState(null);
 
 
   useDidRender(async () => {

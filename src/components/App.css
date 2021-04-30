@@ -42,3 +42,12 @@ h3 {
   min-height: 60vh;
   width: 100%;
 }
+
+.highlight-link {
+  background-color: azure;
+  border: 2px solid lightskyblue;
+}
+
+.card-list-group {
+  border: none;
+}
