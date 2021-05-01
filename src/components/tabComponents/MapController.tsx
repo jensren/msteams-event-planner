@@ -35,6 +35,8 @@ function MapController(props: MapProps) {
   // plot the route
   useEffect(() => {
     if (isMapReady && mapRef && props.poi) {
+      dataSourceRef.clear();
+
       mapRef.layers.add(new layer.LineLayer(dataSourceRef, "route-" + props.poi.name, {
         strokeColor: '#2272B9',
         strokeWidth: 5,
