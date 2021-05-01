@@ -4,17 +4,9 @@ import { data, layer, source } from 'azure-maps-control';
 import { SubscriptionKeyCredential, MapsURL, RouteURL, Aborter } from 'azure-maps-rest';
 
 import { mapSubscription } from '../../config';
-
 import MapComponent from './Map';
 
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
-
-
-
-const dataSourceRef = new source.DataSource();
-const symbolLayerRef = new layer.SymbolLayer(dataSourceRef);
 
 export type Coords = { "lat": number, "lon": number }
 export type MapProps = {
@@ -22,47 +14,22 @@ export type MapProps = {
   poi: { "name": string, "address": string, "position": Coords } | null,
 };
 
+
+const dataSourceRef = new source.DataSource();
+
 function MapController(props: MapProps) {
   // Here you use mapRef from context
   const { mapRef, isMapReady } = useContext<IAzureMapsContextProps>(AzureMapsContext);
-  const [showTileBoundaries, setShowTileBoundaries] = useState(true);
-
-  const changeMapCenter = () => {
-    if (mapRef) {
-      // Simple Camera options modification
-      mapRef.setCamera({ center: getRandomPosition() });
-    }
-  };
-
-  useEffect(() => {
-    if (mapRef) {
-      // Simple Style modification
-      mapRef.setStyle({ showTileBoundaries: !showTileBoundaries });
-    }
-  }, [showTileBoundaries]);
-
-  const toggleTitleBoundaries = () => {
-    setShowTileBoundaries((prev) => !prev);
-  };
 
 
   useEffect(() => {
     if (isMapReady && mapRef) {
       // Need to add source and layer to map on init and ready
       mapRef.sources.add(dataSourceRef);
-      mapRef.layers.add(symbolLayerRef);
       mapRef.setCamera({ center: [props.selfCoords.lon, props.selfCoords.lat], zoom: 10 });
     }
   }, [isMapReady, mapRef, props.selfCoords.lon, props.selfCoords.lat]);
 
-  // Util function to add pin
-  const addRandomMarker = () => {
-    const randomLongitude = Math.floor(Math.random() * (180 - -180) + -180);
-    const randomLatitude = Math.floor(Math.random() * (-90 - 90) + 90);
-    const newPoint = new data.Position(randomLongitude, randomLatitude);
-
-    dataSourceRef.add(new data.Feature(new data.Point(newPoint)));
-  };
 
 
   // plot the route
@@ -128,27 +95,8 @@ function MapController(props: MapProps) {
   return (
     <>
       <MapComponent />
-      <ButtonGroup role="group" aria-label="map controls" className="btn-group-sm">
-        <Button className="btn-secondary" onClick={toggleTitleBoundaries}>
-          Toggle Title Boundaries
-        </Button>
-        <Button className="btn-secondary" onClick={changeMapCenter}>
-          Change Map Center
-        </Button>
-        <Button className="btn-secondary" onClick={addRandomMarker}>
-          Add Pin
-        </Button>
-      </ButtonGroup>
     </>
   );
 };
-
-// Util Function to generate random position
-const getRandomPosition = () => {
-  const randomLongitude = Math.floor(Math.random() * (180 - -180) + -180);
-  const randomLatitude = Math.floor(Math.random() * (-90 - 90) + 90);
-  return [randomLatitude, randomLongitude];
-};
-
 
 export default MapController;
