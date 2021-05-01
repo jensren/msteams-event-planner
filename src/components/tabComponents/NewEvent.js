@@ -67,7 +67,7 @@ function NewEventTemplate(props) {
             <Card.Title><h3>Map</h3></Card.Title>
             <p>Estimated driving time: 15 mins</p>
           </Card.Body>
-          <MapWrapper center={props.selfCoords} />
+          <MapWrapper selfCoords={props.selfCoords} poi={chosenPoi}/>
         </Card>
         <Card>
           <Card.Body>
