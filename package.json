@@ -14,6 +14,7 @@
     "@microsoft/mgt-react": "^2.1.0",
     "@microsoft/microsoft-graph-client": "^2.2.1",
     "@microsoft/teams-js": "^1.6.0",
+    "azure-maps-rest": "^2.0.5",
     "bootstrap": "^4.6.0",
     "dateformat": "^4.5.1",
     "react": "^16.13.1",
