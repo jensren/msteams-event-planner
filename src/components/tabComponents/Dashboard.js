@@ -7,17 +7,28 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 
 export default function Dashboard(props) {
   const [eventQuery, setEventQuery] = useState('');
+  const [validated, setValidated] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.history.push({
-      pathname: '/tab/new-event',
-      state: { query: eventQuery },
-    });
+
+    const form = e.currentTarget;
+    if (form.checkValidity() === false || !props.loggedIn) {
+      e.stopPropagation();
+      console.log("checkValidity: ", form.checkValidity());
+      console.log("loggedIn: ", props.loggedIn);
+    } else {
+      props.history.push({
+        pathname: '/tab/new-event',
+        state: { query: eventQuery },
+      });
+    }
+    setValidated(true);
   }
 
   function handleChange(e) {
@@ -26,28 +37,34 @@ export default function Dashboard(props) {
 
   return (
     <React.Fragment>
-      
+
       <h2>Add a new event</h2>
       <Form
         onSubmit={handleSubmit}
+        noValidate
+        validated={validated}
       >
-        <Form.Group>
-          <Container fluid>
-            <Row>
-              <Col>
+        <Container fluid>
+          <Row>
+            <Col>
+              <Form.Group>
                 <Form.Control
-                  type="input"
+                  type="text"
                   placeholder="e.g. have lunch with my boss"
                   aria-label="create an event"
                   onChange={handleChange}
+                  required
                 />
-              </Col>
-              <Col>
-                <Button type="submit">Go</Button>
-              </Col>
-            </Row>
-          </Container>
-        </Form.Group>
+                <Form.Control.Feedback type="invalid">
+                  {props.loggedIn ? "Event cannot be empty" : "Log in to create an event"}
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+            <Col>
+              <Button type="submit">Go</Button>
+            </Col>
+          </Row>
+        </Container>
       </Form>
 
       <h2>Upcoming Events</h2>
