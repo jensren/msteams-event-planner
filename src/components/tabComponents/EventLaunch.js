@@ -30,6 +30,7 @@ export default function EventLaunch(props) {
   const [manager, setManager] = useState(null);
   const [meetingTimes, setMeetingTimes] = useState(null);
   const [selfCoords, setSelfCoords] = useState(null);
+  const [managerCoords, setManagerCoords] = useState(null);
   const [poiLst, setPoiLst] = useState(null);
 
 
@@ -50,10 +51,10 @@ export default function EventLaunch(props) {
 
     const managerCoordsPromise = addressSearch(managerLocation);
 
-
     const tempSelfCoords = await selfCoordsPromise;
     const tempManagerCoords = await managerCoordsPromise
     setSelfCoords(tempSelfCoords);
+    setManagerCoords(tempManagerCoords);
 
     const midpoint = getMidpoint(tempSelfCoords, tempManagerCoords, fraction);  // [longitude, latitude]
     const poiLstPromise = poiSearch(midpoint[0], midpoint[1], poiQuery);
@@ -77,6 +78,7 @@ export default function EventLaunch(props) {
           manager={manager}
           meetingTimes={meetingTimes}
           selfCoords={selfCoords}
+          managerCoords={managerCoords}
           poiLst={poiLst} 
         />
       );
@@ -86,7 +88,7 @@ export default function EventLaunch(props) {
 
   return (
     <React.Fragment>
-      {(manager && meetingTimes && selfCoords && poiLst) ?
+      {(manager && meetingTimes && selfCoords && managerCoords && poiLst) ?
         isLoading(false) : isLoading(true)
       }
 

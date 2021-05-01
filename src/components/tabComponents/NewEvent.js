@@ -7,8 +7,9 @@ import MapWrapper from './MapWrapper';
 
 function NewEventTemplate(props) {
 
-  const[chosenTime, setChosenTime] = useState(null);
+  const [chosenTime, setChosenTime] = useState(null);
   const [chosenPoi, setChosenPoi] = useState(null);
+  const [startSelfCoords, setStartSelfCoords] = useState(true);
 
   const timesLst = props.meetingTimes.meetingTimeSuggestions
     .map(suggestion => {
@@ -58,16 +59,16 @@ function NewEventTemplate(props) {
               {timesLst}
             </ListGroup>
           </Card.Body>
-          <Card.Footer>
-            <Button variant="link">{props.manager.displayName}'s Route</Button>
-          </Card.Footer>
         </Card>
         <Card>
           <Card.Body>
             <Card.Title><h3>Map</h3></Card.Title>
+            <Button variant="secondary" onClick={() => setStartSelfCoords(!startSelfCoords)}>
+              {startSelfCoords ? props.manager.displayName + "'s Route" : "Your Route"}
+            </Button>
             <p>Estimated driving time: 15 mins</p>
           </Card.Body>
-          <MapWrapper selfCoords={props.selfCoords} poi={chosenPoi}/>
+          <MapWrapper startCoords={startSelfCoords ? props.selfCoords : props.managerCoords} poi={chosenPoi} />
         </Card>
         <Card>
           <Card.Body>

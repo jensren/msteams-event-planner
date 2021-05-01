@@ -7,7 +7,7 @@ import MapController, { MapProps } from './MapController';
 function MapWrapper(props: MapProps) {
   return (
     <AzureMapsProvider>
-        <MapController selfCoords={props.selfCoords} poi={props.poi}/>
+        <MapController startCoords={props.startCoords} poi={props.poi}/>
     </AzureMapsProvider>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { AzureMapsContext, IAzureMapsContextProps } from 'react-azure-maps';
 import { data, layer, source } from 'azure-maps-control';
 import { SubscriptionKeyCredential, MapsURL, RouteURL, Aborter } from 'azure-maps-rest';
@@ -10,7 +10,7 @@ import MapComponent from './Map';
 
 export type Coords = { "lat": number, "lon": number }
 export type MapProps = {
-  selfCoords: Coords,
+  startCoords: Coords,
   poi: { "name": string, "address": string, "position": Coords } | null,
 };
 
@@ -20,15 +20,20 @@ const dataSourceRef = new source.DataSource();
 function MapController(props: MapProps) {
   // Here you use mapRef from context
   const { mapRef, isMapReady } = useContext<IAzureMapsContextProps>(AzureMapsContext);
+  const hasDataSource = useRef(false);
 
 
   useEffect(() => {
     if (isMapReady && mapRef) {
       // Need to add source and layer to map on init and ready
-      mapRef.sources.add(dataSourceRef);
-      mapRef.setCamera({ center: [props.selfCoords.lon, props.selfCoords.lat], zoom: 10 });
+      if (!hasDataSource.current) {
+        mapRef.sources.add(dataSourceRef);
+        hasDataSource.current = true;
+      }
+     
+      mapRef.setCamera({ center: [props.startCoords.lon, props.startCoords.lat], zoom: 13 });
     }
-  }, [isMapReady, mapRef, props.selfCoords.lon, props.selfCoords.lat]);
+  }, [isMapReady, mapRef, props.startCoords]);
 
 
 
@@ -56,8 +61,8 @@ function MapController(props: MapProps) {
         filter: ['any', ['==', ['geometry-type'], 'Point'], ['==', ['geometry-type'], 'MultiPoint']] //Only render Point or MultiPoints in this layer.
       }));
 
-      let startPoint = new data.Feature(new data.Point([props.selfCoords.lon, props.selfCoords.lat]), {
-        title: "Your Office",
+      let startPoint = new data.Feature(new data.Point([props.startCoords.lon, props.startCoords.lat]), {
+        title: "Office",
         icon: "pin-round-blue"
       });
 
@@ -69,7 +74,7 @@ function MapController(props: MapProps) {
       dataSourceRef.add([startPoint, endPoint]);
       mapRef.setCamera({
         bounds: data.BoundingBox.fromData([startPoint, endPoint]),
-        padding: 40
+        padding: 80
       });
 
       // Use SubscriptionKeyCredential with a subscription key
@@ -92,7 +97,7 @@ function MapController(props: MapProps) {
       });
 
     }
-  }, [isMapReady, mapRef, props.poi]);
+  }, [isMapReady, mapRef, props.poi, props.startCoords]);
 
   return (
     <>
