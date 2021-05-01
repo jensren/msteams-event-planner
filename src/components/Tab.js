@@ -21,7 +21,8 @@ class Tab extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      context: {}
+      context: {},
+      loggedIn: false,
     }
   }
 
@@ -34,13 +35,6 @@ class Tab extends React.Component {
         context: context
       });
     });
-    
-    microsoftTeams.registerOnThemeChangeHandler(theme => {
-      if (theme !== this.state.theme) {
-        this.setState({ theme });
-      }
-    });
-    // Next steps: Error handling using the error object
   }
 
 
@@ -49,10 +43,17 @@ class Tab extends React.Component {
     return (
       <React.Fragment>
         <h1>Events Manager</h1>
-        <Login />
+        <Login 
+          loginCompleted={() => this.setState({ loggedIn: true})}
+          logoutCompleted={() => this.setState({ loggedIn: false})}
+        />
         <Switch>
-          <Route exact path="/tab" component={Dashboard} />
-          <Route path="/tab/new-event" component={EventLaunch} />
+          {/* <Route exact path="/tab" render={() => (<Dashboard loggedIn={this.state.loggedIn}/>)} />
+          <Route path="/tab/new-event" component={EventLaunch} /> */}
+          <Route exact path="/tab" 
+            children={(routeProps) => <Dashboard {...routeProps} loggedIn={this.state.loggedIn} />} 
+          />
+          <Route path="/tab/new-event" children={(routeProps) => <EventLaunch {...routeProps}/>} />
         </Switch>
       </React.Fragment>
     );
