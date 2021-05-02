@@ -20,8 +20,6 @@ export default function Dashboard(props) {
     const form = e.currentTarget;
     if (form.checkValidity() === false || !props.loggedIn) {
       e.stopPropagation();
-      console.log("checkValidity: ", form.checkValidity());
-      console.log("loggedIn: ", props.loggedIn);
     } else {
       props.history.push({
         pathname: '/tab/new-event',

@@ -38,7 +38,6 @@ export async function poiSearch(lon, lat, query) {
   });
 
   const fetchResult = await (await fetch(url)).json();
-  console.log("fetchResult: ", fetchResult);
 
   let ret = fetchResult.results.map(item => (
     {
