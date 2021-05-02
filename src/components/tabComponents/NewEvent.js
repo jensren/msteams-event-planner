@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card';
 import CardDeck from 'react-bootstrap/CardDeck';
 import ListGroup from 'react-bootstrap/ListGroup';
 import MapWrapper from './MapWrapper';
+import timeZoneConverter from 'time-zone-converter'
 
 function NewEventTemplate(props) {
 
@@ -15,9 +16,12 @@ function NewEventTemplate(props) {
     .map(suggestion => {
       let key = "time-suggest-" + suggestion.order;
       let dateFormat = require("dateformat");
-      let text = dateFormat(suggestion.meetingTimeSlot.start.dateTime, "dddd, mmmm dS: h:MMtt")
+
+      let start = timeZoneConverter(dateFormat(suggestion.meetingTimeSlot.start.dateTime, "yyyy/mm/dd HH:MM:ss"), 0, -4);
+      let end = timeZoneConverter(dateFormat(suggestion.meetingTimeSlot.end.dateTime, "yyyy/mm/dd HH:MM:ss"), 0, -4);
+      let text = dateFormat(start, "dddd, mmmm dS: h:MMtt")
         + " to "
-        + dateFormat(suggestion.meetingTimeSlot.end.dateTime, "h:MMtt");
+        + dateFormat(end, "h:MMtt");
       return (
         <ListGroup.Item key={key} className="py-2 card-list-group">
           <Button

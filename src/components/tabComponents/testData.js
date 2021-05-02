@@ -16,44 +16,54 @@ export function meetingTimeSuggestionsResult(manager) {
       timeslots: [
         {
           start: {
-            dateTime: '2021-04-28T11:00Z',
+            dateTime: '2021-05-03T16:00Z',
             timeZone: 'UTC'
           },
           end: {
-            dateTime: '2021-04-28T13:00Z',
+            dateTime: '2021-05-03T18:00Z',
             timeZone: 'UTC'
           }
         },
         {
           start: {
-            dateTime: '2021-04-29T11:00Z',
+            dateTime: '2021-05-04T16:00Z',
             timeZone: 'UTC'
           },
           end: {
-            dateTime: '2021-04-29T13:00Z',
+            dateTime: '2021-05-04T18:00Z',
             timeZone: 'UTC'
           }
         },
         {
           start: {
-            dateTime: '2021-04-30T11:00Z',
+            dateTime: '2021-05-05T16:00Z',
             timeZone: 'UTC'
           },
           end: {
-            dateTime: '2021-04-30T13:00Z',
+            dateTime: '2021-05-05T18:00Z',
             timeZone: 'UTC'
           }
         },
         {
           start: {
-            dateTime: '2021-05-03T11:00Z',
+            dateTime: '2021-05-06T16:00Z',
             timeZone: 'UTC'
           },
           end: {
-            dateTime: '2021-05-03T13:00Z',
+            dateTime: '2021-05-06T18:00Z',
             timeZone: 'UTC'
           }
-        }
+        },
+        {
+          start: {
+            dateTime: '2021-05-07T16:00Z',
+            timeZone: 'UTC'
+          },
+          end: {
+            dateTime: '2021-05-07T18:00Z',
+            timeZone: 'UTC'
+          }
+        },
       ]
     },
     locationConstraint:
@@ -61,7 +71,7 @@ export function meetingTimeSuggestionsResult(manager) {
       isRequired: 'false',
       suggestLocation: 'false',
       locations: []
-    }, meetingDuration: 'PT1H'
+    }, meetingDuration: 'PT1H30M'
   };
 }
 
