@@ -7,7 +7,6 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import InputGroup from 'react-bootstrap/InputGroup';
 
 
 export default function Dashboard(props) {
@@ -17,6 +16,7 @@ export default function Dashboard(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
+    console.log("logged in: ", props.loggedIn);
     const form = e.currentTarget;
     if (form.checkValidity() === false || !props.loggedIn) {
       e.stopPropagation();

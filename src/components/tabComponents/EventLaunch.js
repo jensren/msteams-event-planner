@@ -97,13 +97,4 @@ export default function EventLaunch(props) {
 }
 
 
-const LoadingTemplate = (
-  <Container fluid className="py-4">
-    <Row >
-      <Spinner animation="border" className="mx-auto" />
-    </Row>
-  </Container>
-);
-
-
 

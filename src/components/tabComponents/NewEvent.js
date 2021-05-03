@@ -12,6 +12,7 @@ function NewEventTemplate(props) {
   const [chosenPoi, setChosenPoi] = useState(null);
   const [startSelfCoords, setStartSelfCoords] = useState(true);
 
+
   const timesLst = props.meetingTimes.meetingTimeSuggestions
     .map(suggestion => {
       let key = "time-suggest-" + suggestion.order;
@@ -52,6 +53,7 @@ function NewEventTemplate(props) {
     }
     );
 
+    
   return (
     <React.Fragment>
       <h2>New Event: Invite {props.manager.displayName} for Lunch</h2>
