@@ -44,10 +44,8 @@ class Tab extends React.Component {
       <React.Fragment>
         <h1>Events Manager</h1>
         <Login 
-          loginCompleted={() => {this.setState({ loggedIn: true}); console.log("Log in success") }}
+          loginCompleted={() => {this.setState({ loggedIn: true})}}
           logoutCompleted={() => this.setState({ loggedIn: false})}
-          loginInitiated={() => console.log("Starting log in")}
-          loginFailed={() => {console.log("Log in failed")}}
         />
         <Switch>
           <Route exact path="/tab" 
