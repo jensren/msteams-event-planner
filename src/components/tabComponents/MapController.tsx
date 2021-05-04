@@ -10,17 +10,23 @@ import MapComponent from './Map';
 
 export type Coords = { "lat": number, "lon": number }
 export type MapProps = {
-  startCoords: Coords,
+  startSelfCoords: Boolean,
+  selfCoords: Coords,
+  managerCoords: Coords,
   poi: { "name": string, "address": string, "position": Coords } | null,
+  managerName: string,
 };
 
 
 const dataSourceRef = new source.DataSource();
 
+
 function MapController(props: MapProps) {
   // Here you use mapRef from context
   const { mapRef, isMapReady } = useContext<IAzureMapsContextProps>(AzureMapsContext);
   const hasDataSource = useRef(false);
+
+  const centerCoords = props.startSelfCoords ? [props.selfCoords.lon, props.selfCoords.lat] : [props.managerCoords.lon, props.managerCoords.lat];
 
 
   useEffect(() => {
@@ -31,9 +37,9 @@ function MapController(props: MapProps) {
         hasDataSource.current = true;
       }
      
-      mapRef.setCamera({ center: [props.startCoords.lon, props.startCoords.lat], zoom: 13 });
+      mapRef.setCamera({ center: centerCoords, zoom: 13 });
     }
-  }, [isMapReady, mapRef, props.startCoords]);
+  }, [isMapReady, mapRef, props.selfCoords, props.managerCoords, props.startSelfCoords]);
 
 
 
@@ -61,10 +67,17 @@ function MapController(props: MapProps) {
         filter: ['any', ['==', ['geometry-type'], 'Point'], ['==', ['geometry-type'], 'MultiPoint']] //Only render Point or MultiPoints in this layer.
       }));
 
-      let startPoint = new data.Feature(new data.Point([props.startCoords.lon, props.startCoords.lat]), {
-        title: "Office",
+      let selfPoint = new data.Feature(new data.Point([props.selfCoords.lon, props.selfCoords.lat]), {
+        title: "Your Office",
         icon: "pin-round-blue"
       });
+
+      let managerPoint = new data.Feature(new data.Point([props.managerCoords.lon, props.managerCoords.lat]), {
+        title: props.managerName + "'s Office",
+        icon: "pin-round-blue"
+      });
+
+      let startPoint = props.startSelfCoords ? selfPoint : managerPoint;
 
       let endPoint = new data.Feature(new data.Point([props.poi.position.lon, props.poi.position.lat]), {
         title: props.poi.name,
@@ -97,7 +110,7 @@ function MapController(props: MapProps) {
       });
 
     }
-  }, [isMapReady, mapRef, props.poi, props.startCoords]);
+  }, [isMapReady, mapRef, props.poi, props.selfCoords, props.managerCoords, props.startSelfCoords, props.managerName]);
 
   return (
     <>

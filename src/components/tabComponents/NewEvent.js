@@ -74,7 +74,7 @@ function NewEventTemplate(props) {
             </Button>
             <p>Estimated driving time: 15 mins</p>
           </Card.Body>
-          <MapWrapper startCoords={startSelfCoords ? props.selfCoords : props.managerCoords} poi={chosenPoi} />
+          <MapWrapper startSelfCoords={startSelfCoords} selfCoords={props.selfCoords} managerCoords={props.managerCoords} managerName={props.manager.displayName} poi={chosenPoi} />
         </Card>
         <Card>
           <Card.Body>
