@@ -76,7 +76,19 @@ export function meetingTimeSuggestionsResult(manager) {
 }
 
 
-export const selfLocation = "30 Hudson St Jersey City, NJ 07302";
-export const managerLocation = "10 Hudson Yards New York, NY 1000";
+export const selfLocation = {
+  streetNumber: 30,
+  streetName: "Hudson St",
+  municipality: "Jersey City",
+  postalCode: "07302",
+  countryCode: "USA"
+};
+export const managerLocation = {
+  streetNumber: 10,
+  streetName: "Hudson Yards",
+  municipality: "New York City",
+  postalCode: "10001",
+  countryCode: "USA"
+};
 export const fraction = 0.6;
 export const poiQuery = "RESTAURANT";

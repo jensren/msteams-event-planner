@@ -5,14 +5,20 @@ import { math, data } from 'azure-maps-control';
 export async function addressSearch(address) {
   // takes address string and returns the latitude and longitude
 
-  const url = new URL("https://atlas.microsoft.com/search/address/json");
+  const url = new URL("https://atlas.microsoft.com/search/address/structured/json");
   url.search = new URLSearchParams({
     "subscription-key": mapSubscription,
     "api-version": "1.0",
-    "query": address,
+    "countryCode": address.countryCode,
+    "municipality": address.municipality,
+    "postalCode": address.postalCode,
+    "streetName": address.streetName,
+    "streetNumber": address.streetNumber,
   });
 
   const fetchResult = await (await fetch(url)).json();
+  console.log("address:", address);
+  console.log("fetchResult:", fetchResult);
   return fetchResult.results[0].position;
 }
 
