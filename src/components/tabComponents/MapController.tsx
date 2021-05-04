@@ -86,7 +86,7 @@ function MapController(props: MapProps) {
 
       dataSourceRef.add([startPoint, endPoint]);
       mapRef.setCamera({
-        bounds: data.BoundingBox.fromData([startPoint, endPoint]),
+        bounds: data.BoundingBox.fromData([selfPoint, managerPoint]),
         padding: 80
       });
 
