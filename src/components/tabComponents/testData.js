@@ -1,9 +1,11 @@
-export function meetingTimeSuggestionsResult(manager) {
+
+
+export function meetingTimeSuggestionsResult(self, manager) {
   return {
     attendees: [
       {
         emailAddress:
-          { address: 'jen-admin@globalsportstour.onmicrosoft.com', name: 'Jenny Ren' },
+          { address: self.mail, name: self.displayName },
         type: 'Required'
       },
       {

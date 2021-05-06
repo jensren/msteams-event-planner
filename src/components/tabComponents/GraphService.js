@@ -1,5 +1,10 @@
 // access Graph API
 
+export async function getSelf(client) {
+  return await client.api('/me')
+	  .get();
+}
+
 export async function getManager(client) {
   let directoryObject = await client.api('/me/manager')
     .get();
