@@ -17,8 +17,6 @@ export async function addressSearch(address) {
   });
 
   const fetchResult = await (await fetch(url)).json();
-  console.log("address:", address);
-  console.log("fetchResult:", fetchResult);
   return fetchResult.results[0].position;
 }
 

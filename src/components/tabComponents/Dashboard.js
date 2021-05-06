@@ -16,7 +16,6 @@ export default function Dashboard(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    console.log("logged in: ", props.loggedIn);
     const form = e.currentTarget;
     if (form.checkValidity() === false || !props.loggedIn) {
       e.stopPropagation();
