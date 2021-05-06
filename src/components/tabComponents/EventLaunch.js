@@ -64,30 +64,19 @@ export default function EventLaunch(props) {
     setPoiLst(await poiLstPromise);
   });
 
-  function isLoading(loading) {
-    if (loading) {
-      return (
-        <Loading />
-      );
-    } else {
-      return (
-        <NewEvent
-          self={self} 
+
+  return (
+    <React.Fragment>
+      {(manager && meetingTimes && selfCoords && managerCoords && poiLst)
+        ? <NewEvent
+          self={self}
           manager={manager}
           meetingTimes={meetingTimes}
           selfCoords={selfCoords}
           managerCoords={managerCoords}
-          poiLst={poiLst} 
+          poiLst={poiLst}
         />
-      );
-    }
-  }
-
-
-  return (
-    <React.Fragment>
-      {(manager && meetingTimes && selfCoords && managerCoords && poiLst) ?
-        isLoading(false) : isLoading(true)
+        : <Loading />
       }
 
     </React.Fragment>
