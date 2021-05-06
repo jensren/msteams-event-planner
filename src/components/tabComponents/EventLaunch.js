@@ -4,12 +4,10 @@ import { Client } from '@microsoft/microsoft-graph-client';
 import { getManager, getMeetingTime, getSelf } from './GraphService';
 import { addressSearch, getMidpoint, poiSearch } from './MapService';
 
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Spinner from 'react-bootstrap/Spinner';
 
 import { meetingTimeSuggestionsResult, selfLocation, managerLocation, fraction, poiQuery } from './testData';
-import NewEventTemplate from './NewEvent';
+import NewEvent from './NewEvent';
+import Loading from './Loading';
 
 
 function useDidRender(callback, deps) {
@@ -69,15 +67,11 @@ export default function EventLaunch(props) {
   function isLoading(loading) {
     if (loading) {
       return (
-        <Container fluid className="py-4">
-          <Row >
-            <Spinner animation="border" className="mx-auto" />
-          </Row>
-        </Container>
+        <Loading />
       );
     } else {
       return (
-        <NewEventTemplate
+        <NewEvent
           self={self} 
           manager={manager}
           meetingTimes={meetingTimes}
@@ -99,6 +93,7 @@ export default function EventLaunch(props) {
     </React.Fragment>
   );
 }
+
 
 
 
