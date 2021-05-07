@@ -1,6 +1,6 @@
 
 
-export function meetingTimeSuggestionsResult(self, manager) {
+export function meetingTimeSuggestionsResult(self, manager, timeZone) {
   return {
     attendees: [
       {
@@ -18,52 +18,52 @@ export function meetingTimeSuggestionsResult(self, manager) {
       timeslots: [
         {
           start: {
-            dateTime: '2021-05-03T16:00Z',
-            timeZone: 'UTC'
+            dateTime: '2021-05-10T12:00',
+            timeZone: timeZone
           },
           end: {
-            dateTime: '2021-05-03T18:00Z',
-            timeZone: 'UTC'
+            dateTime: '2021-05-10T14:00',
+            timeZone: timeZone
           }
         },
         {
           start: {
-            dateTime: '2021-05-04T16:00Z',
-            timeZone: 'UTC'
+            dateTime: '2021-05-11T12:00',
+            timeZone: timeZone
           },
           end: {
-            dateTime: '2021-05-04T18:00Z',
-            timeZone: 'UTC'
+            dateTime: '2021-05-11T14:00',
+            timeZone: timeZone
           }
         },
         {
           start: {
-            dateTime: '2021-05-05T16:00Z',
-            timeZone: 'UTC'
+            dateTime: '2021-05-12T12:00',
+            timeZone: timeZone
           },
           end: {
-            dateTime: '2021-05-05T18:00Z',
-            timeZone: 'UTC'
+            dateTime: '2021-05-12T14:00',
+            timeZone: timeZone
           }
         },
         {
           start: {
-            dateTime: '2021-05-06T16:00Z',
-            timeZone: 'UTC'
+            dateTime: '2021-05-13T12:00',
+            timeZone: timeZone
           },
           end: {
-            dateTime: '2021-05-06T18:00Z',
-            timeZone: 'UTC'
+            dateTime: '2021-05-13T14:00',
+            timeZone: timeZone
           }
         },
         {
           start: {
-            dateTime: '2021-05-07T16:00Z',
-            timeZone: 'UTC'
+            dateTime: '2021-05-14T12:00',
+            timeZone: timeZone
           },
           end: {
-            dateTime: '2021-05-07T18:00Z',
-            timeZone: 'UTC'
+            dateTime: '2021-05-14T14:00',
+            timeZone: timeZone
           }
         },
       ]
@@ -134,7 +134,7 @@ export function meetingInfo(self, manager, time, poi) {
       ],
     });
   }
-  return ({
+  let info = ({
     subject: 'Lunch Meeting',
     body: {
       contentType: 'HTML',
@@ -155,4 +155,6 @@ export function meetingInfo(self, manager, time, poi) {
       }
     ],
   });
+  console.log("meetingInfo:", info);
+  return info;
 }

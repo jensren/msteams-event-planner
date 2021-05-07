@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Providers } from '@microsoft/mgt';
 import { Client } from '@microsoft/microsoft-graph-client';
-import { getManager, getMeetingTime, getSelf } from './GraphService';
+import { getManager, getMeetingTime, getSelf, getTimezone } from './GraphService';
 import { addressSearch, getMidpoint, poiSearch } from './MapService';
 
 
@@ -26,6 +26,7 @@ export default function EventLaunch(props) {
   // const query = props.history.location.state.query
 
   const [self, setSelf] = useState(null);
+  const [timeZone, setTimeZone] = useState(null);
   const [manager, setManager] = useState(null);
   const [meetingTimes, setMeetingTimes] = useState(null);
   const [selfCoords, setSelfCoords] = useState(null);
@@ -44,11 +45,13 @@ export default function EventLaunch(props) {
 
     const tempSelf = await getSelf(client);
     const tempManager = await getManager(client);
+    const tempTimeZone = await getTimezone(client);
     setSelf(tempSelf);
     setManager(tempManager);
+    setTimeZone(tempTimeZone);
 
-    const meetingData = meetingTimeSuggestionsResult(tempSelf, tempManager);
-    const meetingTimesPromise = getMeetingTime(client, meetingData);
+    const meetingData = meetingTimeSuggestionsResult(tempSelf, tempManager, tempTimeZone);
+    const meetingTimesPromise = getMeetingTime(client, meetingData, tempTimeZone);
 
     const managerCoordsPromise = addressSearch(managerLocation);
 

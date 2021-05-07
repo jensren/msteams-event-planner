@@ -5,11 +5,9 @@ import CardDeck from 'react-bootstrap/CardDeck';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Alert from 'react-bootstrap/Alert';
 
-import timeZoneConverter from 'time-zone-converter';
 import { scheduleMeeting } from './GraphService';
 
 import MapWrapper from './MapWrapper';
-import Loading from './Loading';
 import { meetingInfo } from './testData';
 import Spinner from 'react-bootstrap/esm/Spinner';
 
@@ -41,8 +39,8 @@ function NewEvent(props) {
       let key = "time-suggest-" + suggestion.order;
       let dateFormat = require("dateformat");
 
-      let start = timeZoneConverter(dateFormat(suggestion.meetingTimeSlot.start.dateTime, "yyyy/mm/dd HH:MM:ss"), 0, -4);
-      let end = timeZoneConverter(dateFormat(suggestion.meetingTimeSlot.end.dateTime, "yyyy/mm/dd HH:MM:ss"), 0, -4);
+      let start = dateFormat(suggestion.meetingTimeSlot.start.dateTime, "yyyy/mm/dd HH:MM:ss");
+      let end = dateFormat(suggestion.meetingTimeSlot.end.dateTime, "yyyy/mm/dd HH:MM:ss");
       let text = dateFormat(start, "dddd, mmmm dS: h:MMtt")
         + " to "
         + dateFormat(end, "h:MMtt");

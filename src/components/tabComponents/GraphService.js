@@ -10,8 +10,15 @@ export async function getManager(client) {
     .get();
 }
 
-export async function getMeetingTime(client, meetingTimeSuggestionsResult) {
+export async function getTimezone(client) {
+  let t = await client.api('/me/mailboxsettings')
+	  .get();
+  return t.timeZone;
+}
+
+export async function getMeetingTime(client, meetingTimeSuggestionsResult, timeZone) {
   return await client.api('/me/findMeetingTimes')
+    .header("Prefer", `outlook.timezone="${timeZone}"`)
     .post(meetingTimeSuggestionsResult);
 }
 
