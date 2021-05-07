@@ -10,7 +10,7 @@ export function meetingTimeSuggestionsResult(self, manager) {
       },
       {
         emailAddress:
-          { address: manager.mail, name: manager.displayName},
+          { address: manager.mail, name: manager.displayName },
         type: 'Required'
       }
     ],
@@ -94,3 +94,65 @@ export const managerLocation = {
 };
 export const fraction = 0.6;
 export const poiQuery = "RESTAURANT";
+
+export function meetingInfo(self, manager, time, poi) {
+  if (poi) {
+    return ({
+      subject: 'Lunch Meeting',
+      body: {
+        contentType: 'HTML',
+        content: `Let's go for lunch! Does ${time.text} at ${poi.name} work for you?`
+      },
+      start: time.start,
+      end: time.end,
+      location: {
+        displayName: poi.name,
+        address: {
+          "city": poi.city,
+          "countryOrRegion": poi.country,
+          "postalCode": poi.postalCode,
+          "state": poi.state,
+          "street": poi.street
+        },
+        coordinates: {
+          "latitude": poi.position.lat,
+          "longitude": poi.position.lon
+        },
+        locationType: "restaurant"
+      },
+      attendees: [
+        {
+          emailAddress:
+            { address: self.mail, name: self.displayName },
+          type: 'Required'
+        },
+        {
+          emailAddress:
+            { address: manager.mail, name: manager.displayName },
+          type: 'Required'
+        }
+      ],
+    });
+  }
+  return ({
+    subject: 'Lunch Meeting',
+    body: {
+      contentType: 'HTML',
+      content: `Does ${time.text} work for you?`
+    },
+    start: time.start,
+    end: time.end,
+    attendees: [
+      {
+        emailAddress:
+          { address: self.mail, name: self.displayName },
+        type: 'Required'
+      },
+      {
+        emailAddress:
+          { address: manager.mail, name: manager.displayName },
+        type: 'Required'
+      }
+    ],
+  });
+}

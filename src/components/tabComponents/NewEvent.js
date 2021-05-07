@@ -3,18 +3,41 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import CardDeck from 'react-bootstrap/CardDeck';
 import ListGroup from 'react-bootstrap/ListGroup';
-import MapWrapper from './MapWrapper';
-import timeZoneConverter from 'time-zone-converter'
+import Alert from 'react-bootstrap/Alert';
 
-function NewEventTemplate(props) {
+import timeZoneConverter from 'time-zone-converter';
+import { scheduleMeeting } from './GraphService';
+
+import MapWrapper from './MapWrapper';
+import Loading from './Loading';
+import { meetingInfo } from './testData';
+import Spinner from 'react-bootstrap/esm/Spinner';
+
+function NewEvent(props) {
 
   const [chosenTime, setChosenTime] = useState(null);
   const [chosenPoi, setChosenPoi] = useState(null);
   const [startSelfCoords, setStartSelfCoords] = useState(true);
+  const [displayError, setDisplayError] = useState(false);
+  const [displaySubmit, setDisplaySubmit] = useState(false);
+
+  function handleSubmit(e) {
+    if (chosenTime) {
+      setDisplayError(false);
+      setDisplaySubmit(true);
+      let info = meetingInfo(props.self, props.manager, chosenTime, chosenPoi);
+      scheduleMeeting(props.client, info).then((result) => {
+        console.log("meeting scheduling result: ", result);
+        return result;
+      });
+    } else {
+      setDisplayError(true);
+    }
+  }
 
 
   const timesLst = props.meetingTimes.meetingTimeSuggestions
-    .map(suggestion => {
+    .map((suggestion) => {
       let key = "time-suggest-" + suggestion.order;
       let dateFormat = require("dateformat");
 
@@ -27,8 +50,9 @@ function NewEventTemplate(props) {
         <ListGroup.Item key={key} className="py-2 card-list-group">
           <Button
             variant="link"
-            className={chosenTime && chosenTime === text ? "highlight-link" : null}
-            onClick={() => setChosenTime(text)}
+            className={chosenTime && chosenTime.text === text ? "highlight-link" : null}
+            onClick={() => setChosenTime({ text: text, ...suggestion.meetingTimeSlot })}
+            disabled={displaySubmit}
           >
             {text}
           </Button>
@@ -38,13 +62,14 @@ function NewEventTemplate(props) {
     );
 
   const poiLstGroup = props.poiLst
-    .map(poi => {
+    .map((poi) => {
       return (
         <ListGroup.Item key={"poi-" + poi.name} className="py-2 card-list-group">
           <Button
             variant="link"
             className={chosenPoi && chosenPoi.name === poi.name ? "highlight-link" : null}
             onClick={() => setChosenPoi(poi)}
+            disabled={displaySubmit}
           >
             {poi.name}
           </Button>
@@ -53,7 +78,7 @@ function NewEventTemplate(props) {
     }
     );
 
-    
+
   return (
     <React.Fragment>
       <h2>New Event: Invite {props.manager.displayName} for Lunch</h2>
@@ -84,14 +109,56 @@ function NewEventTemplate(props) {
             </ListGroup>
           </Card.Body>
           <Card.Footer>
-            <Button variant="link">Load more</Button>
+            <Button
+              variant="link"
+              disabled={displaySubmit}
+            >
+              Load more
+            </Button>
           </Card.Footer>
         </Card>
       </CardDeck>
-      <Button className="my-3">Submit Event</Button>
+
+      {displayError &&
+        <Alert
+          variant="danger"
+          className="mt-3 mb-0 alert-style"
+          aria-live="polite"
+          dismissible
+          onClose={() => { setDisplayError(false) }}
+        >
+          You must select a time to create an event.
+        </Alert>
+      }
+      {displaySubmit
+        ?
+        <Button
+          className="my-3"
+          disabled
+          aria-live="polite"
+        >
+          <Spinner 
+            animation="border" 
+            as="span" 
+            size="sm" 
+            role="status" 
+            aria-hidden="true" 
+            className="mb-1 mr-2"
+          />
+          Submitting...
+        </Button>
+        :
+        <Button
+          className="my-3"
+          onClick={handleSubmit}
+        >
+          Submit Event
+        </Button>
+      }
+
     </React.Fragment>
   );
 }
 
 
-export default NewEventTemplate;
+export default NewEvent;

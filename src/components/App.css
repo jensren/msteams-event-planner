@@ -34,6 +34,9 @@ h3 {
   color: red;
 }
 
+
+/* Change bootstrap default styles */
+
 .btn-group-sm .btn-secondary {
   font-size: 0.75em;
 }
@@ -50,4 +53,8 @@ h3 {
 
 .card-list-group {
   border: none;
+}
+
+.alert-style {
+  max-width: max-content;
 }

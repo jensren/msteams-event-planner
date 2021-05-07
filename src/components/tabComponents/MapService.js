@@ -48,6 +48,11 @@ export async function poiSearch(lon, lat, query) {
       "name": item.poi.name,
       "address": item.address.freeformAddress,
       "position": item.position,
+      "city": item.address.municipality,
+      "country": item.address.country,
+      "postalCode": item.address.postalCode,
+      "state": item.address.countrySubdivision,
+      "street": item.address.streetNumber + " " + item.address.streetName,
     }
   ));
 

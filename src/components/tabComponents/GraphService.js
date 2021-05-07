@@ -14,3 +14,8 @@ export async function getMeetingTime(client, meetingTimeSuggestionsResult) {
   return await client.api('/me/findMeetingTimes')
     .post(meetingTimeSuggestionsResult);
 }
+
+export async function scheduleMeeting(client, meetingInfo) {
+  return await client.api('/me/events')
+    .post(meetingInfo);
+}

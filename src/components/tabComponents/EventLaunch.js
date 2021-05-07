@@ -32,14 +32,14 @@ export default function EventLaunch(props) {
   const [managerCoords, setManagerCoords] = useState(null);
   const [poiLst, setPoiLst] = useState(null);
 
+  const options = {
+    authProvider: Providers.globalProvider,
+  };
+
+  const client = Client.initWithMiddleware(options);
 
   useDidRender(async () => {
-    const options = {
-      authProvider: Providers.globalProvider,
-    };
-
-    const client = Client.initWithMiddleware(options);
-
+    
     const selfCoordsPromise = addressSearch(selfLocation);
 
     const tempSelf = await getSelf(client);
@@ -69,6 +69,7 @@ export default function EventLaunch(props) {
     <React.Fragment>
       {(manager && meetingTimes && selfCoords && managerCoords && poiLst)
         ? <NewEvent
+          client={client}
           self={self}
           manager={manager}
           meetingTimes={meetingTimes}
