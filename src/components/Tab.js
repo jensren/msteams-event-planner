@@ -23,7 +23,13 @@ class Tab extends React.Component {
     this.state = {
       context: {},
       loggedIn: false,
+      eventSubmit: false,
     }
+    this.setEventSubmit = this.setEventSubmit.bind(this);
+  }
+
+  setEventSubmit(bool) {
+    this.setState({eventSubmit: bool});
   }
 
   //React lifecycle method that gets called once a component has finished mounting
@@ -49,9 +55,11 @@ class Tab extends React.Component {
         />
         <Switch>
           <Route exact path="/tab" 
-            children={(routeProps) => <Dashboard {...routeProps} loggedIn={this.state.loggedIn} />} 
+            children={(routeProps) => <Dashboard {...routeProps} loggedIn={this.state.loggedIn} eventSubmit={this.eventSubmit} setEventSubmit={this.setEventSubmit}/>} 
           />
-          <Route path="/tab/new-event" children={(routeProps) => <EventLaunch {...routeProps}/>} />
+          <Route path="/tab/new-event" 
+            children={(routeProps) => <EventLaunch {...routeProps} setEventSubmit={this.setEventSubmit}/>}
+          />
         </Switch>
       </React.Fragment>
     );

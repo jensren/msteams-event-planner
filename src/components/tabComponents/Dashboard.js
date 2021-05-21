@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Alert from 'react-bootstrap/Alert';
 
 
 export default function Dashboard(props) {
@@ -34,6 +35,17 @@ export default function Dashboard(props) {
 
   return (
     <React.Fragment>
+      {props.eventSubmit &&
+        <Alert
+          variant="success"
+          className="mt-3 mb-0 alert-style"
+          dismissible
+          aria-live="polite"
+          onClose={() => { props.setEventSubmit(false) }}
+        >
+          Event submission successful!
+        </Alert>
+      }
 
       <h2>Add a new event</h2>
       <Form

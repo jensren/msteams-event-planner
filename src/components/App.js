@@ -24,7 +24,7 @@ function App() {
   microsoftTeams.initialize();
   TeamsProvider.microsoftTeamsLib = microsoftTeams;
 
-  Providers.globalProvider = new TeamsProvider(config)
+  Providers.globalProvider = new TeamsProvider(config);
 
 
   // Display the app home page hosted in Teams

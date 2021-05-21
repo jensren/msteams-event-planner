@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { withRouter } from "react-router";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import CardDeck from 'react-bootstrap/CardDeck';
@@ -26,7 +27,11 @@ function NewEvent(props) {
       let info = meetingInfo(props.self, props.manager, chosenTime, chosenPoi);
       scheduleMeeting(props.client, info).then((result) => {
         console.log("meeting scheduling result: ", result);
-        return result;
+        // TODO: handle event submission failed here (moving back to dashboard assumes success)
+        props.setEventSubmit(true)
+        props.history.push({
+          pathname: '/tab'
+        });
       });
     } else {
       setDisplayError(true);
@@ -159,4 +164,4 @@ function NewEvent(props) {
 }
 
 
-export default NewEvent;
+export default withRouter(NewEvent);

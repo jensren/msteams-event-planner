@@ -26,7 +26,6 @@ export default function EventLaunch(props) {
   // const query = props.history.location.state.query
 
   const [self, setSelf] = useState(null);
-  const [timeZone, setTimeZone] = useState(null);
   const [manager, setManager] = useState(null);
   const [meetingTimes, setMeetingTimes] = useState(null);
   const [selfCoords, setSelfCoords] = useState(null);
@@ -45,13 +44,12 @@ export default function EventLaunch(props) {
 
     const tempSelf = await getSelf(client);
     const tempManager = await getManager(client);
-    const tempTimeZone = await getTimezone(client);
+    const timeZone = await getTimezone(client);
     setSelf(tempSelf);
     setManager(tempManager);
-    setTimeZone(tempTimeZone);
 
-    const meetingData = meetingTimeSuggestionsResult(tempSelf, tempManager, tempTimeZone);
-    const meetingTimesPromise = getMeetingTime(client, meetingData, tempTimeZone);
+    const meetingData = meetingTimeSuggestionsResult(tempSelf, tempManager, timeZone);
+    const meetingTimesPromise = getMeetingTime(client, meetingData, timeZone);
 
     const managerCoordsPromise = addressSearch(managerLocation);
 
@@ -60,8 +58,8 @@ export default function EventLaunch(props) {
     setSelfCoords(tempSelfCoords);
     setManagerCoords(tempManagerCoords);
 
-    const midpoint = getMidpoint(tempSelfCoords, tempManagerCoords, fraction);  // [longitude, latitude]
-    const poiLstPromise = poiSearch(midpoint[0], midpoint[1], poiQuery);
+    const midpoint = getMidpoint(tempSelfCoords, tempManagerCoords, fraction);
+    const poiLstPromise = poiSearch(midpoint[0], midpoint[1], poiQuery);  // [longitude, latitude]
 
     setMeetingTimes(await meetingTimesPromise);
     setPoiLst(await poiLstPromise);
@@ -79,6 +77,7 @@ export default function EventLaunch(props) {
           selfCoords={selfCoords}
           managerCoords={managerCoords}
           poiLst={poiLst}
+          setEventSubmit={this.setEventSubmit}
         />
         : <Loading />
       }
