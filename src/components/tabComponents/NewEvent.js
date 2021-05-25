@@ -26,7 +26,6 @@ function NewEvent(props) {
       setDisplaySubmit(true);
       let info = meetingInfo(props.self, props.manager, chosenTime, chosenPoi);
       scheduleMeeting(props.client, info).then((result) => {
-        console.log("meeting scheduling result: ", result);
         // TODO: handle event submission failed here (moving back to dashboard assumes success)
         props.setEventSubmit(true)
         props.history.push({

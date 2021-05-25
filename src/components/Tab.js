@@ -55,7 +55,7 @@ class Tab extends React.Component {
         />
         <Switch>
           <Route exact path="/tab" 
-            children={(routeProps) => <Dashboard {...routeProps} loggedIn={this.state.loggedIn} eventSubmit={this.eventSubmit} setEventSubmit={this.setEventSubmit}/>} 
+            children={(routeProps) => <Dashboard {...routeProps} loggedIn={this.state.loggedIn} eventSubmit={this.state.eventSubmit} setEventSubmit={this.setEventSubmit}/>} 
           />
           <Route path="/tab/new-event" 
             children={(routeProps) => <EventLaunch {...routeProps} setEventSubmit={this.setEventSubmit}/>}

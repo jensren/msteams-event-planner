@@ -77,7 +77,7 @@ export default function EventLaunch(props) {
           selfCoords={selfCoords}
           managerCoords={managerCoords}
           poiLst={poiLst}
-          setEventSubmit={this.setEventSubmit}
+          setEventSubmit={props.setEventSubmit}
         />
         : <Loading />
       }
