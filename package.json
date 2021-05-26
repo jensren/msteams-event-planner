@@ -43,7 +43,8 @@
     ]
   },
   "devDependencies": {
-    "@microsoft/microsoft-graph-types": "^1.36.0"
+    "@microsoft/microsoft-graph-types": "^1.36.0",
+    "typescript": "^4.2.4"
   },
   "eslintConfig": {
     "extends": [
