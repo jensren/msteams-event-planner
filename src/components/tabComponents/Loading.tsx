@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 
+// loading spinner that is centered within parent element
 export default function Loading() {
   return <Container fluid className="py-4">
     <Row>
