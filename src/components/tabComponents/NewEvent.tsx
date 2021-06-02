@@ -5,22 +5,41 @@ import Card from 'react-bootstrap/Card';
 import CardDeck from 'react-bootstrap/CardDeck';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Alert from 'react-bootstrap/Alert';
+import { RouteChildrenProps } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { Client } from '@microsoft/microsoft-graph-client';
+import { Coords } from './MapController';
+import { POIAddress } from './MapService';
 
 import { scheduleMeeting } from './GraphService';
+import { meetingInfo, MeetingTime } from './testData';
 
 import MapWrapper from './MapWrapper';
-import { meetingInfo } from './testData';
 import Spinner from 'react-bootstrap/esm/Spinner';
 
-function NewEvent(props) {
 
-  const [chosenTime, setChosenTime] = useState(null);
-  const [chosenPoi, setChosenPoi] = useState(null);
+interface Props {
+  client: Client,
+  // TODO: change these types from any
+  self: any,
+  manager: any,
+  meetingTimes: any,
+  selfCoords: Coords,
+  managerCoords: Coords,
+  poiLst: Array<POIAddress>,
+  setEventSubmit: Function
+}
+
+export default function NewEvent(props: Props) {
+  let history = useHistory();
+
+  const [chosenTime, setChosenTime] = useState<MeetingTime | null>(null);
+  const [chosenPoi, setChosenPoi] = useState<POIAddress | null>(null);
   const [startSelfCoords, setStartSelfCoords] = useState(true);
   const [displayError, setDisplayError] = useState(false);
   const [displaySubmit, setDisplaySubmit] = useState(false);
 
-  function handleSubmit(e) {
+  function handleSubmit() {
     if (chosenTime) {
       setDisplayError(false);
       setDisplaySubmit(true);
@@ -28,7 +47,7 @@ function NewEvent(props) {
       scheduleMeeting(props.client, info).then((result) => {
         // TODO: handle event submission failed here (moving back to dashboard assumes success)
         props.setEventSubmit(true)
-        props.history.push({
+        history.push({
           pathname: '/tab'
         });
       });
@@ -39,8 +58,8 @@ function NewEvent(props) {
 
 
   const timesLst = props.meetingTimes.meetingTimeSuggestions
-    .map((suggestion) => {
-      let key = "time-suggest-" + suggestion.order;
+    .map((suggestion: any) => {
+      let key = "time-suggest-" + suggestion.order;  // TODO: suggestion.order is sometimes undefined
       let dateFormat = require("dateformat");
 
       let start = dateFormat(suggestion.meetingTimeSlot.start.dateTime, "yyyy/mm/dd HH:MM:ss");
@@ -52,7 +71,7 @@ function NewEvent(props) {
         <ListGroup.Item key={key} className="py-2 card-list-group">
           <Button
             variant="link"
-            className={chosenTime && chosenTime.text === text ? "highlight-link" : null}
+            className={chosenTime && chosenTime.text === text ? "highlight-link" : ""}
             onClick={() => setChosenTime({ text: text, ...suggestion.meetingTimeSlot })}
             disabled={displaySubmit}
           >
@@ -69,7 +88,7 @@ function NewEvent(props) {
         <ListGroup.Item key={"poi-" + poi.name} className="py-2 card-list-group">
           <Button
             variant="link"
-            className={chosenPoi && chosenPoi.name === poi.name ? "highlight-link" : null}
+            className={chosenPoi && chosenPoi.name === poi.name ? "highlight-link" : ""}
             onClick={() => setChosenPoi(poi)}
             disabled={displaySubmit}
           >
@@ -161,6 +180,3 @@ function NewEvent(props) {
     </React.Fragment>
   );
 }
-
-
-export default withRouter(NewEvent);
