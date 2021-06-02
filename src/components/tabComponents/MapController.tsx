@@ -5,6 +5,7 @@ import { SubscriptionKeyCredential, MapsURL, RouteURL, Aborter } from 'azure-map
 
 import { mapSubscription } from '../../config';
 import MapComponent from './Map';
+import { POIAddress } from './MapService';
 
 
 

@@ -13,10 +13,10 @@ type InputAddress = {
   countryCode: string  // using ISO standard codes
 };
 
-type POIAddress = {
+export type POIAddress = {
   "name": string,
   "address": string,
-  "position": data.Position,
+  "position": Coords,
   "city": string,
   "country": string,
   "postalCode": string,
@@ -53,7 +53,7 @@ export function getMidpoint(origin: Coords, destination: Coords, fraction: numbe
   return result;
 }
 
-export async function poiSearch(lon: number, lat: number, query: string): Promise<POIAddress> {
+export async function poiSearch(lon: number, lat: number, query: string): Promise<Array<POIAddress>> {
   // center is around specified longitude and latitude, query is the type of POI desired
 
   const url = new URL("https://atlas.microsoft.com/search/poi/category/json");

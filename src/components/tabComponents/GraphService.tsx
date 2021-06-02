@@ -10,15 +10,14 @@ type Attendee = {
   type: 'required' | 'optional' | 'resource'  // 'required' or 'optional' for person, 'resource' for resource
 };
 
-type TimeSlot = {
-  start: {
-    dateTime: string,  // 'yyyy-mm-ddThh:mm'
-    timeZone: string   // long form, e.g. 'Eastern Standard Time'
-  }
-  end: {
-    dateTime: string,
-    timeZone: string
-  }
+type Time = {
+  dateTime: string,  // 'yyyy-mm-ddThh:mm'
+  timeZone: string   // long form, e.g. 'Eastern Standard Time'
+}
+
+export type TimeSlot = {
+  start: Time
+  end: Time
 };
 
 type Location = {
@@ -26,7 +25,7 @@ type Location = {
   locationEmailAddress: string
 }
 
-type MeetingTimeSuggestions = {
+export type MeetingTimeSuggestions = {
   attendees: Array<Attendee>,
   timeConstraint: {
     timeslots: Array<TimeSlot>
@@ -39,15 +38,30 @@ type MeetingTimeSuggestions = {
   }, meetingDuration: string  // 'PThHmmM', where h is hours and mm is minutes and capital letters are not changed
 };
 
-type MeetingInfo = {
+export type MeetingInfo = {
   subject: string,
   body: {
-    contentType: 'HTML',
+    contentType: 'HTML'
     content: string
   },
-  start: string,  // 'yyyy-mm-ddThh:mm'
-  end: string,
+  start: Time
+  end: Time
   attendees: Array<Attendee>,
+  location?: {
+    displayName: string,
+    address: {
+      "city": string,
+      "countryOrRegion": string,
+      "postalCode": string,
+      "state": string,
+      "street": string
+    },
+    coordinates: {
+      "latitude": number,
+      "longitude": number
+    },
+    locationType: string
+  },
 };
 
 
