@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { Agenda } from '@microsoft/mgt-react'
+import { RouteChildrenProps } from "react-router-dom";
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -10,11 +11,17 @@ import Col from 'react-bootstrap/Col';
 import Alert from 'react-bootstrap/Alert';
 
 
-export default function Dashboard(props) {
+interface Props extends RouteChildrenProps {
+  loggedIn: boolean,
+  eventSubmit: boolean,
+  setEventSubmit: Function
+}
+
+export default function Dashboard(props: Props) {
   const [eventQuery, setEventQuery] = useState('');
   const [validated, setValidated] = useState(false);
 
-  function handleSubmit(e) {
+  function handleSubmit(e: React.FormEvent<any>) {
     e.preventDefault();
 
     const form = e.currentTarget;
@@ -29,7 +36,7 @@ export default function Dashboard(props) {
     setValidated(true);
   }
 
-  function handleChange(e) {
+  function handleChange(e: React.ChangeEvent<any>) {
     setEventQuery(e.target.value);
   }
 
