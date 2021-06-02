@@ -15,13 +15,13 @@
     "@microsoft/microsoft-graph-client": "^2.2.1",
     "@microsoft/teams-js": "^1.6.0",
     "azure-maps-rest": "^2.0.5",
-    "bootstrap": "^4.6.0",
+    "bootstrap": "^5.0.1",
     "dateformat": "^4.5.1",
     "react": "^16.13.1",
     "react-azure-maps": "^0.3.0",
     "react-bootstrap": "^1.5.2",
     "react-dom": "^16.13.1",
-    "react-router-dom": "^5.1.2",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
     "time-zone-converter": "^1.1.0"
   },
@@ -44,6 +44,9 @@
   },
   "devDependencies": {
     "@microsoft/microsoft-graph-types": "^1.36.0",
+    "@types/react-bootstrap": "^0.32.25",
+    "@types/react-router": "^5.1.14",
+    "@types/react-router-dom": "^5.1.7",
     "typescript": "^4.2.4"
   },
   "eslintConfig": {
