@@ -1,17 +1,23 @@
+import { POIAddress } from './MapService';
+import { TimeSlot, MeetingTimeSuggestions, MeetingInfo } from './GraphService';
 
 
-export function meetingTimeSuggestionsResult(self, manager, timeZone) {
+export interface MeetingTime extends TimeSlot {
+  text: string
+}
+
+export function meetingTimeSuggestionsResult(self: any, manager: any, timeZone: string): MeetingTimeSuggestions {
   return {
     attendees: [
       {
         emailAddress:
           { address: self.mail, name: self.displayName },
-        type: 'Required'
+        type: 'required'
       },
       {
         emailAddress:
           { address: manager.mail, name: manager.displayName },
-        type: 'Required'
+        type: 'required'
       }
     ],
     timeConstraint: {
@@ -95,7 +101,7 @@ export const managerLocation = {
 export const fraction = 0.6;
 export const poiQuery = "RESTAURANT";
 
-export function meetingInfo(self, manager, time, poi) {
+export function meetingInfo(self: any, manager: any, time: MeetingTime, poi: POIAddress | null): MeetingInfo {
   if (poi) {
     return ({
       subject: 'Lunch Meeting',
@@ -124,17 +130,17 @@ export function meetingInfo(self, manager, time, poi) {
         {
           emailAddress:
             { address: self.mail, name: self.displayName },
-          type: 'Required'
+          type: 'required'
         },
         {
           emailAddress:
             { address: manager.mail, name: manager.displayName },
-          type: 'Required'
+          type: 'required'
         }
       ],
     });
   }
-  let info = ({
+  let info: MeetingInfo = {
     subject: 'Lunch Meeting',
     body: {
       contentType: 'HTML',
@@ -146,15 +152,14 @@ export function meetingInfo(self, manager, time, poi) {
       {
         emailAddress:
           { address: self.mail, name: self.displayName },
-        type: 'Required'
+        type: 'required'
       },
       {
         emailAddress:
           { address: manager.mail, name: manager.displayName },
-        type: 'Required'
+        type: 'required'
       }
     ],
-  });
-  console.log("meetingInfo:", info);
+  };
   return info;
 }

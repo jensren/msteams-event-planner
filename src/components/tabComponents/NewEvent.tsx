@@ -12,7 +12,7 @@ import { Coords } from './MapController';
 import { POIAddress } from './MapService';
 
 import { scheduleMeeting } from './GraphService';
-import { meetingInfo, MeetingTime } from './testData';
+import { meetingInfo, MeetingTime } from './TestData';
 
 import MapWrapper from './MapWrapper';
 import Spinner from 'react-bootstrap/esm/Spinner';
